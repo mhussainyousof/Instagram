@@ -9,7 +9,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit({required this.authRepo}) : super(AuthInitial());
 
-  // check if user is already authenticated
+  //! check if user is already authenticated
   void checkAuth() async {
     emit(AuthLoading());
     try {
@@ -19,7 +19,7 @@ class AuthCubit extends Cubit<AuthState> {
         _currentUser = user;
         emit(Authenticated(user));
       } else {
-        emit(Unauthenticated()); // Changed from Unauthorized to Unauthenticated
+        emit(Unauthenticated());
       }
     } catch (e) {
       emit(AuthError('Failed to check authentication: $e'));
@@ -47,7 +47,7 @@ Future<void> login(String email, String pw) async {
   }
 }
 
-// register with email + pw
+//! register with email + pw
 Future<void> register(String name, String email, String pw) async {
   try {
     emit(AuthLoading());
