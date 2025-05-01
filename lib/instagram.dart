@@ -22,7 +22,9 @@ class MyApp extends StatelessWidget {
         theme: lightMode,
         home: BlocConsumer<AuthCubit, AuthState>(
           listener: (context, state) {
-            //! Handle side effects like navigation or showing dialogs
+            if(state is AuthError){
+              
+            }
           },
           builder: (context, authState) {
             print(authState);
