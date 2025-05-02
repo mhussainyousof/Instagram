@@ -1,8 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:instagram/features/profile/domain/entity/profile_user.dart';
+
 import 'package:instagram/features/profile/domain/repo/profile_repo.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_state.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepo profileRepo;

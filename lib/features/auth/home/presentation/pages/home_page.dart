@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/auth/home/presentation/components/my_drawer.dart';
-import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
