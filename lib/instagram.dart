@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/auth/data/firebase_auth_repo.dart';
-import 'package:instagram/features/auth/post/presentation/pages/home_page.dart';
+import 'package:instagram/features/auth/home/presentation/pages/home_page.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_state.dart';
 import 'package:instagram/features/auth/presentation/pages/auth_page.dart';
+import 'package:instagram/features/profile/data/fire_base_profile_repo.dart';
+import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:instagram/theme/light_mode.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   
   get authRepo => FirebaseAuthRepo();
+  get profileRepo => FirebaseProfileRepo();
 
   @override
   Widget build(BuildContext context) {
     //! provide cubit to app
-    return BlocProvider(
-      create: (context) => AuthCubit(authRepo: authRepo)..checkAuth(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(
+          create: (context) => AuthCubit(authRepo: authRepo)..checkAuth(),
+        ),
+        BlocProvider<ProfileCubit>(
+          create: (context) => ProfileCubit(profileRepo: profileRepo),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: lightMode,

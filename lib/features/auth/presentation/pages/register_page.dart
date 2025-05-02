@@ -49,7 +49,10 @@ class _RegisterPageState extends State<RegisterPage> {
   //! fields are empty -> display error
   else {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Please complete all fields")),
+      const SnackBar(
+        
+        content: Text("Please complete all fields")),
+      
     );
   }
 }

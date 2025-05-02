@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:instagram/features/auth/home/presentation/components/my_drawer.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,10 +14,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MyDrawer(),
       appBar: AppBar(
-        actions: [
-          IconButton(onPressed: (){context.read<AuthCubit>().logout();}, icon: Icon(Icons.logout))
-        ],
         title: const Text("Home"),
         centerTitle: true,
       ),
