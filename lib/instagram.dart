@@ -6,7 +6,6 @@ import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_state.dart';
 import 'package:instagram/features/auth/presentation/pages/auth_page.dart';
 import 'package:instagram/features/cloudanity/data/cloudaniry_storage_repo.dart';
-import 'package:instagram/features/cloudanity/domain/storage_repo.dart';
 import 'package:instagram/features/profile/data/fire_base_profile_repo.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:instagram/theme/light_mode.dart';
