@@ -39,6 +39,11 @@ dependencies:
   firebase_auth: ^5.5.3
   flutter_bloc: ^9.1.0
   cloud_firestore: ^5.6.7
+  firebase_storage: ^12.4.5
+  file_picker: ^10.1.2
+  cached_network_image: ^3.4.1
+  cloudinary_public: ^0.23.1
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
