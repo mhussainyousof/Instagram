@@ -21,9 +21,11 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: lightMode,
         home: BlocConsumer<AuthCubit, AuthState>(
+
+          //! listens for error
           listener: (context, state) {
             if(state is AuthError){
-              
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
             }
           },
           builder: (context, authState) {
