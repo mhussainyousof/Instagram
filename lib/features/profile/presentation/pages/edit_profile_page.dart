@@ -24,7 +24,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   //! update profile button pressed
 void updateProfile() async {
-    // profile cubit
+    //! profile cubit
     final profileCubit = context.read<ProfileCubit>();
     if (bioTextController.text.isNotEmpty) {
         profileCubit.updateProfile(
@@ -74,16 +74,12 @@ Widget buildEditPage({double uploadProgress = 0.0}) {
         IconButton(onPressed: updateProfile, icon: Icon(Icons.upload))
       ],
     ),
+
     body: Column(
       children: [
         Text('Bio'),
         SizedBox(height: 10),
         Padding(padding: EdgeInsets.symmetric(horizontal: 25.0),
         child: MyTextField(controller: bioTextController, hintText: widget.user.bio, obscureText: false),
-        
         )
-      ],
-    ),
-   );
-}
-}
+      ]));}}
