@@ -21,22 +21,33 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   //! Update bio and/or profile picture
-  Future<void> updateProfile({
-    String? newBio,
-    String? newProfileImageUrl,
-    required ProfileUser currentUser,
-  }) async {
-    try {
-      emit(const ProfileLoading());
-      final updatedUser = currentUser.copyWith(
-        newBio: newBio,
-        newProfileImageUrl: newProfileImageUrl,
-      );
-      await profileRepo.updateProfile(updatedUser);
-      emit(ProfileLoaded(updatedUser));
-    } catch (e) {
-      emit(ProfileError('Failed to update profile: ${e.toString()}'));
-      emit(ProfileLoaded(currentUser));
-    }
+  // Update bio and/or profile picture
+Future<void> updateProfile({
+  required String uid,
+  String? newBio,
+  String? newProfileImageUrl,
+}) async {
+  emit(const ProfileLoading());
+  try {
+    // Fetch current profile first
+    final currentUser = await profileRepo.fetchUserProfile(uid);
+    
+    // Create updated profile with new values
+    final updatedProfile = currentUser.copyWith(
+      newBio: newBio,
+      newProfileImageUrl: newProfileImageUrl,
+    );
+    
+    // Update in repository
+    await profileRepo.updateProfile(updatedProfile);
+    
+    // Emit the updated profile
+    emit(ProfileLoaded(updatedProfile));
+    
+  } catch (e) {
+    emit(ProfileError("Error updating profile: ${e.toString()}"));
+    // Optionally re-fetch the original profile
+    await fetchUserProfile(uid);
   }
+}
 }
