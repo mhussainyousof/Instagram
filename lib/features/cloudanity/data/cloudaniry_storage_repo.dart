@@ -1,8 +1,58 @@
+import 'dart:io';
 import 'dart:typed_data';
+import 'package:cloudinary_public/cloudinary_public.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram/features/cloudanity/domain/storage_repo.dart';
 
-import 'package:cloudinary_public/cloudinary_public.dart';
-import 'package:image_picker/image_picker.dart';
+class FirebaseStorageRepo implements StorageRepo {
+  final FirebaseStorage storage = FirebaseStorage.instance;
+
+  // Mobile platform - upload from file path
+  @override
+  Future<String?> uploadProfileImageMobile(String path, String fileName) {
+    return _uploadFile(path, fileName, "profile_images");
+  }
+
+  // Web platform - upload from bytes (corrected Uint8List type)
+  @override
+  Future<String?> uploadProfileImageWeb(Uint8List fileBytes, String fileName) {
+    return _uploadFileBytes(fileBytes, fileName, "profile_images");
+  }
+
+  /* ========== HELPER METHODS ========== */
+
+  //! Upload from file path (for mobile)
+  Future<String?> _uploadFile(
+    String path, 
+    String fileName, 
+    String folder
+  ) async {
+    try {
+      final file = File(path);
+      final ref = storage.ref('$folder/$fileName');
+      await ref.putFile(file);
+      return await ref.getDownloadURL();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Upload from bytes (for web)
+  Future<String?> _uploadFileBytes(
+    Uint8List fileBytes,
+    String fileName,
+    String folder
+  ) async {
+    try {
+      final ref = storage.ref('$folder/$fileName');
+      await ref.putData(fileBytes);
+      return await ref.getDownloadURL();
+    } catch (e) {
+      return null;
+    }
+  }
+}
 
 
 class CloudinaryStorageRepo implements StorageRepo {

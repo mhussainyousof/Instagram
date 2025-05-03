@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/auth/domain/entity/app_user.dart';
@@ -77,22 +78,29 @@ class _ProfilePageState extends State<ProfilePage> {
 
                     const SizedBox(height: 25),
                     //! Profile picture
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      height: 120,
-                      width: 120,
-                      padding: const EdgeInsets.all(12),
-                      child: Center(
-                        child: Icon(
-                          Icons.person,
-                          size: 72,
-                          color: Theme.of(context).colorScheme.primary,
+                    CachedNetworkImage(
+                          imageUrl: loadedUser.profileImageUrl,
+                          placeholder:
+                              (context, url) =>
+                                  const CircularProgressIndicator(),
+                          errorWidget:
+                              (context, url, error) => Icon(
+                                Icons.person,
+                                size: 72,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                          imageBuilder:
+                              (context, imageProvider) => Container(
+                                width: 120,
+                                  height: 120,
+                                  decoration:  BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(image: imageProvider,
+                                    fit: BoxFit.cover)
+                                  ),
+                                
+                              ),
                         ),
-                      ),
-                    ),
 
                     const SizedBox(height: 25),
 
