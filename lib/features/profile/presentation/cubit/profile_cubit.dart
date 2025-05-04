@@ -1,13 +1,15 @@
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/cloudanity/domain/storage_repo.dart';
+import 'package:instagram/features/profile/domain/entity/profile_user.dart';
 import 'package:instagram/features/profile/domain/repo/profile_repo.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_state.dart';
 
     class ProfileCubit extends Cubit<ProfileState> {
       final ProfileRepo profileRepo;
-      // final StorageRepo storageRepo;
+      //! final StorageRepo storageRepo;
       final StorageRepo storageRepo; 
 
       ProfileCubit({required this.profileRepo, required this.storageRepo})
@@ -23,6 +25,18 @@ import 'package:instagram/features/profile/presentation/cubit/profile_state.dart
           emit(ProfileError(e.toString()));
         }
       }
+
+      /// Fetches a user profile by their UID
+/// Useful for loading multiple profiles (e.g., for posts in a feed)
+Future<ProfileUser?> getUserProfile(String uid) async {
+  try {
+    final user = await profileRepo.fetchUserProfile(uid);
+    return user;
+  } catch (e) {
+    debugPrint('Error fetching user profile: $e');
+    return null;
+  }
+}
 
       //! Update bio and/or profile picture
       // Update bio and/or profile picture
