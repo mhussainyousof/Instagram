@@ -6,4 +6,8 @@ abstract class StorageRepo {
 
   //! Upload profile image from bytes (for web)
   Future<String?> uploadProfileImageWeb(Uint8List fileBytes, String fileName);
+
+  Future<String?> uploadPostImageMobile(String path, String fileName);
+
+  Future<String?> uploadPostImageWeb(Uint8List fileBytes, String fileName);
 }

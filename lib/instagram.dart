@@ -6,6 +6,8 @@ import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_state.dart';
 import 'package:instagram/features/auth/presentation/pages/auth_page.dart';
 import 'package:instagram/features/cloudanity/data/cloudaniry_storage_repo.dart';
+import 'package:instagram/features/post/data/firebase_post_repo.dart';
+import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/profile/data/fire_base_profile_repo.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:instagram/theme/light_mode.dart';
@@ -16,6 +18,7 @@ class MyApp extends StatelessWidget {
   final firebaseAuthRepo = FirebaseAuthRepo();
   final firebaseProfileRepo = FirebaseProfileRepo();
   final firebaseStorageRepo = CloudinaryStorageRepo();
+  final firebasePostRepo = FirebasePostRepo();
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +30,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ProfileCubit>(
           create: (context) => ProfileCubit(profileRepo: firebaseProfileRepo, storageRepo: firebaseStorageRepo),
+        ),
+        BlocProvider<PostCubit>(
+          create: (context) => PostCubit(storageRepo: firebaseStorageRepo, postRepo: firebasePostRepo),
         ),
       ],
       child: MaterialApp(

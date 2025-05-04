@@ -7,27 +7,31 @@ class FirebaseAuthRepo implements AuthRepo {
   final firebaseAuth = FirebaseAuth.instance;
   final firebaseFireStore = FirebaseFirestore.instance;
   @override
- Future<AppUser?> loginWithEmailPassword(String email, String password) async {
-  try {
-    //! attempt sign in
-    UserCredential userCredential = await firebaseAuth
-        .signInWithEmailAndPassword(email: email, password: password);
+  Future<AppUser?> loginWithEmailPassword(String email, String password) async {
+    try {
+      //! attempt sign in
+      UserCredential userCredential = await firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
 
-    //! create user
-    AppUser user = AppUser(
-      uid: userCredential.user!.uid,
-      email: email,
-      name: '',
-    );
+      DocumentSnapshot userDoc =
+          await firebaseFireStore
+              .collection('users')
+              .doc(userCredential.user!.uid)
+              .get();
 
-    
-    
-    // return user
-    return user;
-  } catch (e) {
-    throw Exception('Login failed: $e');
+      //! create user
+      AppUser user = AppUser(
+        uid: userCredential.user!.uid,
+        email: email,
+        name: userDoc['name'],
+      );
+
+      // return user
+      return user;
+    } catch (e) {
+      throw Exception('Login failed: $e');
+    }
   }
-}
 
   @override
   Future<AppUser?> registerWithEmailPassword(
@@ -35,27 +39,28 @@ class FirebaseAuthRepo implements AuthRepo {
     String email,
     String password,
   ) async {
-   try {
-    //! attempt sign up
-    UserCredential userCredential = await firebaseAuth
-        .createUserWithEmailAndPassword(
-          email: email, password: password);
+    try {
+      //! attempt sign up
+      UserCredential userCredential = await firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
-    // create user
-    AppUser user = AppUser(
-      uid: userCredential.user!.uid, 
-      email: email,
-      name: name,
-    );
+      // create user
+      AppUser user = AppUser(
+        uid: userCredential.user!.uid,
+        email: email,
+        name: name,
+      );
 
-    await firebaseFireStore.collection('users').doc(user.uid).set(user.toJson());
+      await firebaseFireStore
+          .collection('users')
+          .doc(user.uid)
+          .set(user.toJson());
 
-    
-    // return user
-    return user;
-  } catch (e) {
-    throw Exception('Signup failed: $e');
-  }
+      // return user
+      return user;
+    } catch (e) {
+      throw Exception('Signup failed: $e');
+    }
   }
 
   @override
@@ -64,20 +69,29 @@ class FirebaseAuthRepo implements AuthRepo {
   }
 
   @override
-Future<AppUser?> getCurrentUser() async {
-  //! get current logged in user from firebase
-  final firebaseUser = firebaseAuth.currentUser;
+  Future<AppUser?> getCurrentUser() async {
+    //! get current logged in user from firebase
+    final firebaseUser = firebaseAuth.currentUser;
 
-  //! no user logged in..
-  if (firebaseUser == null) {
-    return null;
+    //! no user logged in..
+    if (firebaseUser == null) {
+      return null;
+    }
+
+ DocumentSnapshot userDoc =
+          await firebaseFireStore
+              .collection('users')
+              .doc(firebaseUser.uid)
+              .get();
+
+              if(!userDoc.exists){
+                return null;
+              }
+    //! user exists
+    return AppUser(
+      uid: firebaseUser.uid,
+      email: firebaseUser.email ?? '', // Handle potential null email
+      name: userDoc['name'],
+    );
   }
-
-  //! user exists
-  return AppUser(
-    uid: firebaseUser.uid,
-    email: firebaseUser.email ?? '', // Handle potential null email
-    name: firebaseUser.displayName ?? '',
-  );
-}
 }

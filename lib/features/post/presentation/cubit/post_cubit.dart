@@ -16,30 +16,46 @@ class PostCubit extends Cubit<PostState> {
   }) : super(PostsInitial());
 
   // Create a new post
-  Future<void> createPost(Post post, {String? imagePath, Uint8List? imageBytes}) async {
-    String? imageUrl;
+Future<void> createPost(Post post, {String? imagePath, Uint8List? imageBytes}) async {
+  String? imageUrl;
 
-    // Handle image upload for mobile p  latforms (using file path)
-   
-    try {
-       if (imagePath != null) {
-      emit(PostUploading());
-      imageUrl = await storageRepo.uploadProfileImageMobile(imagePath, post.id);
+  emit(PostUploading()); // emit once at the start
+
+  try {
+    // Handle image upload for mobile platforms
+    if (imagePath != null) {
+      imageUrl = await storageRepo.uploadPostImageMobile(
+        imagePath,
+        "${post.id}_${DateTime.now().millisecondsSinceEpoch}",
+      );
     }
-    // Handle image upload for web platforms (using file bytes)
+    // Handle image upload for web platforms
     else if (imageBytes != null) {
-      emit(PostUploading());
-      imageUrl = await storageRepo.uploadProfileImageWeb(imageBytes, post.id);
+      imageUrl = await storageRepo.uploadPostImageWeb(
+        imageBytes,
+        "${post.id}_${DateTime.now().millisecondsSinceEpoch}",
+      );
+    }
+
+    // Check if upload failed
+    if ((imagePath != null || imageBytes != null) && imageUrl == null) {
+      emit(PostsError("Failed to upload post image"));
+      return;
     }
 
     // Update post with image URL if available
     final updatedPost = imageUrl != null ? post.copyWith(imageUrl: imageUrl) : post;
 
-    postRepo.createPost(updatedPost);
-    } catch (e) {
-      emit(PostsError('Failed to create post : $e'));
-    }
+    await postRepo.createPost(updatedPost);
+
+    //! Refresh the post list (this will emit PostsLoaded inside)
+    await fetchAllPosts();
+
+  } catch (e) {
+    emit(PostsError('Failed to create post: $e'));
   }
+}
+
 
      Future<void> fetchAllPosts() async {
     try {
@@ -54,7 +70,6 @@ class PostCubit extends Cubit<PostState> {
   //! Delete a post
   Future<void> deletePost(String postId) async {
     try {
-      emit(PostsLoading());
       await postRepo.deletePost(postId);
       final posts = await postRepo.fetchAllPosts(); // Refresh the list after deletion
       emit(PostsLoaded(posts));
