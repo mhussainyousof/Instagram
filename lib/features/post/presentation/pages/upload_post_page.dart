@@ -5,15 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/auth/domain/entity/app_user.dart';
 import 'package:instagram/features/auth/presentation/components/stext_field.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:instagram/features/post/domain/entity/post.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
-import 'dart:io';  
 import 'package:flutter/foundation.dart';  
-import 'package:flutter/material.dart';
+
 
 class UploadPostPage extends StatefulWidget {
   const UploadPostPage({super.key});
