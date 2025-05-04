@@ -97,4 +97,18 @@ Future<ProfileUser?> getUserProfile(String uid) async {
           await fetchUserProfile(uid);
         }
   }
+
+  // Toggle follow/unfollow
+Future<void> toggleFollow(String currentUserId, String targetUserId) async {
+  try {
+    // Call repository to toggle follow status
+    await profileRepo.toggleFollow(currentUserId, targetUserId);
+    
+    // Refresh the profile data after follow status change
+    await fetchUserProfile(targetUserId);
+  } catch (e) {
+    // Emit error state if something goes wrong
+    emit(ProfileError("Error toggling follow: ${e.toString()}"));
+  }
+}
 }

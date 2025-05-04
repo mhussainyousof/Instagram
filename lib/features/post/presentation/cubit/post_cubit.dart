@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/cloudanity/domain/storage_repo.dart';
+import 'package:instagram/features/post/domain/entity/comment.dart';
 import 'package:instagram/features/post/domain/entity/post.dart';
 import 'package:instagram/features/post/domain/repo/post_repo.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
@@ -85,6 +86,26 @@ Future<void> toggleLikePost(String postId, String userId) async {
   } catch (e) {
     emit(PostsError("Failed to toggle like: ${e.toString()}"));
     rethrow; 
+  }
+}
+
+// Add a comment to a post
+Future<void> addComment(String postId, Comment comment) async {
+  try {
+    await postRepo.addComment(postId, comment);
+    await fetchAllPosts();
+  } catch (e) {
+    emit(PostsError("Failed to add comment: $e"));
+  }
+}
+
+// Delete comment from a post
+Future<void> deleteComment(String postId, String commentId) async {
+  try {
+    await postRepo.deleteComment(postId, commentId);
+    await fetchAllPosts();
+  } catch (e) {
+    emit(PostsError("Failed to delete comment: $e"));
   }
 }
 
