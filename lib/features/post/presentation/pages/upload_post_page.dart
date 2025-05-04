@@ -14,19 +14,14 @@ import 'package:flutter/foundation.dart';
 
 class UploadPostPage extends StatefulWidget {
   const UploadPostPage({super.key});
-
   @override
   State<UploadPostPage> createState() => _UploadPostPageState();
 
 }
-
 class _UploadPostPageState extends State<UploadPostPage> {
 
-   PlatformFile? imagePickerFile;
-
-
+  PlatformFile? imagePickerFile;
   Uint8List? webImage;
-
   final textController = TextEditingController();
 
   //! Current user

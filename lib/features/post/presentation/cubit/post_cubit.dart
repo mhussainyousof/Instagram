@@ -1,10 +1,10 @@
 import 'dart:typed_data';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/cloudanity/domain/storage_repo.dart';
 import 'package:instagram/features/post/domain/entity/post.dart';
 import 'package:instagram/features/post/domain/repo/post_repo.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
+
 
 class PostCubit extends Cubit<PostState> {
   final PostRepo postRepo;
@@ -15,21 +15,21 @@ class PostCubit extends Cubit<PostState> {
     required this.storageRepo,
   }) : super(PostsInitial());
 
-  // Create a new post
+  //! Create a new post
 Future<void> createPost(Post post, {String? imagePath, Uint8List? imageBytes}) async {
   String? imageUrl;
 
-  emit(PostUploading()); // emit once at the start
+  emit(PostUploading());
 
   try {
-    // Handle image upload for mobile platforms
+    //! Handle image upload for mobile platforms
     if (imagePath != null) {
       imageUrl = await storageRepo.uploadPostImageMobile(
         imagePath,
         "${post.id}_${DateTime.now().millisecondsSinceEpoch}",
       );
     }
-    // Handle image upload for web platforms
+    //! Handle image upload for web platforms
     else if (imageBytes != null) {
       imageUrl = await storageRepo.uploadPostImageWeb(
         imageBytes,
@@ -43,7 +43,7 @@ Future<void> createPost(Post post, {String? imagePath, Uint8List? imageBytes}) a
       return;
     }
 
-    // Update post with image URL if available
+    //! Update post with image URL if available
     final updatedPost = imageUrl != null ? post.copyWith(imageUrl: imageUrl) : post;
 
     await postRepo.createPost(updatedPost);

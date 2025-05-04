@@ -90,7 +90,7 @@ class FirebaseAuthRepo implements AuthRepo {
     //! user exists
     return AppUser(
       uid: firebaseUser.uid,
-      email: firebaseUser.email ?? '', // Handle potential null email
+      email: firebaseUser.email ?? '', 
       name: userDoc['name'],
     );
   }
