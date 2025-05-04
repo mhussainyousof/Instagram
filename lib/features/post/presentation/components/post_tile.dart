@@ -66,6 +66,35 @@ class _PostTileState extends State<PostTile> {
     }
   }
 
+  // user tapped like button
+  void toggleLikePost() {
+    // current like status
+    final isLiked = widget.post.likes.contains(currentUser!.uid);
+
+    // optimistically like & update UI
+    setState(() {
+      if (isLiked) {
+        widget.post.likes.remove(currentUser!.uid);
+      } else {
+        widget.post.likes.add(currentUser!.uid);
+      }
+    });
+
+    // update like
+    postCubit.toggleLikePost(widget.post.id, currentUser!.uid).catchError((
+      error,
+    ) {
+      // if there's an error, revert back to original values
+      setState(() {
+        if (isLiked) {
+          widget.post.likes.add(currentUser!.uid);
+        } else {
+          widget.post.likes.remove(currentUser!.uid);
+        }
+      });
+    });
+  }
+
   // show options for deletion
   void showOptions() {
     showDialog(
@@ -114,23 +143,28 @@ class _PostTileState extends State<PostTile> {
                             image: DecorationImage(
                               image: imageProvider,
                               fit: BoxFit.cover,
-                            ), 
+                            ),
                           ),
-                        ), 
-                  ) 
+                        ),
+                  )
                   : const Icon(Icons.person),
 
               SizedBox(width: 10),
               // name
-              Text(widget.post.userName, style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),),
+              Text(
+                widget.post.userName,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                ),
+              ),
 
               Spacer(),
               // delete button
-              if(isOwnPost)
-             GestureDetector(
-              onTap: showOptions,
-              child: Icon(Icons.delete, color: Colors.grey.shade600),
-             )
+              if (isOwnPost)
+                GestureDetector(
+                  onTap: showOptions,
+                  child: Icon(Icons.delete, color: Colors.grey.shade600),
+                ),
             ],
           ),
           CachedNetworkImage(
@@ -153,100 +187,46 @@ class _PostTileState extends State<PostTile> {
             padding: const EdgeInsets.all(8.0),
             child: Text(widget.post.text),
           ),
-         // Buttons -> like, comment, timestamp
-Row(
-  children: [
-    // Like button
-    IconButton(
-      icon: const Icon(Icons.favorite_border),
-      onPressed: () {
-        // Handle like action
-      },
-    ),
-    const SizedBox(width: 8), // Add spacing between buttons
-    
-    // Comment button
-    IconButton(
-      icon: const Icon(Icons.comment),
-      onPressed: () {
-        // Handle comment action
-      },
-    ),
-    const Spacer(), // Pushes timestamp to the right
-    
-    // Timestamp
-    Text(
-      widget.post.timestamp.toString(),
-      style: Theme.of(context).textTheme.bodySmall,
-    ),
-  ],
-), // Row
+          //! Buttons -> like, comment, timestamp
+          Row(
+            children: [
+              SizedBox(
+                width: 50,
+                child: Row(
+                  children: [
+                    // like button
+                    GestureDetector(
+                      onTap: toggleLikePost,
+                      child: Icon(
+                        widget.post.likes.contains(currentUser!.uid)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                            color: widget.post.likes.contains(currentUser!.uid) ? Colors.red : Theme.of(context).colorScheme.primary,
+                      ),
+                    ), 
+                    SizedBox(width: 5),
+                    Text(widget.post.likes.length.toString(), style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12),),
+                  ],
+                ), 
+              ), 
+              // Comment button
+              IconButton(
+                icon: const Icon(Icons.comment),
+                onPressed: () {
+                  // Handle comment action
+                },
+              ),
+              const Spacer(), // Pushes timestamp to the right
+              // Timestamp
+              Text(
+                widget.post.timestamp.toString(),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
+          ), // Row
         ],
       ),
     );
   }
 }
 
-
-
-
-
-
-// class PostTile extends StatelessWidget {
-//   final Post post;
-//   final VoidCallback? onDelete;
-
-//   const PostTile({super.key, required this.post, this.onDelete});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       child: Column(
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Row(
-//               children: [
-//                 // User info
-//                 CircleAvatar(
-//                   backgroundImage: NetworkImage(post.imageUrl),
-//                   radius: 16,
-//                 ),
-//                 const SizedBox(width: 8),
-//                 Text(post.userName),
-//                 const Spacer(),
-//                 //! Delete button (only show if current user owns post)
-//                 if (onDelete != null)
-//                   IconButton(
-//                     icon: const Icon(Icons.delete),
-//                     onPressed: onDelete,
-//                   ),
-//               ],
-//             ),
-//           ),
-//           //! Post image
-//           CachedNetworkImage(
-//             imageUrl: post.imageUrl ,
-//             height: 430,
-//             width: double.infinity,
-//             fit: BoxFit.cover,
-//             placeholder: (context, url) => Container(
-//               height: 430,
-//               color: Colors.grey[200],
-//             ),
-//             errorWidget: (context, url, error) => Container(
-//               height: 430,
-//               color: Colors.grey[200],
-//               child: const Icon(Icons.error),
-//             ),
-//           ),
-//           // Post caption and actions
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Text(post.text),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

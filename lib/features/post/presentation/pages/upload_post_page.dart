@@ -74,9 +74,10 @@ final newPost = Post(
     text: textController.text,
     imageUrl: '',
     timestamp: DateTime.now(),
+    likes: []
 ); // Post
 
-// post cubit
+// post cubit 
 final postCubit = context.read<PostCubit>();
 
  // web upload
