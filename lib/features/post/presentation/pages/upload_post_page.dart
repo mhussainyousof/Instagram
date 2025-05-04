@@ -74,7 +74,9 @@ final newPost = Post(
     text: textController.text,
     imageUrl: '',
     timestamp: DateTime.now(),
-    likes: []
+    likes: [],
+    comments: []
+    
 ); // Post
 
 // post cubit 

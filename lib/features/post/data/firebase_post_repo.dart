@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:instagram/features/post/domain/entity/comment.dart';
 import 'package:instagram/features/post/domain/entity/post.dart';
 import 'package:instagram/features/post/domain/repo/post_repo.dart';
 
@@ -85,6 +86,53 @@ Future<List<Post>> fetchAllPosts() async {
     }
   } catch (e) {
     throw Exception("Error toggling like: $e");
+  }
+}
+
+  @override
+Future<void> addComment(String postId, Comment comment) async {
+  try {
+    // get post document
+    final postDoc = await postCollection.doc(postId).get();
+
+    if (postDoc.exists) {
+      // convert json object -> post
+      final post = Post.fromJson(postDoc.data() as Map<String, dynamic>);
+
+      // add the new comment
+      post.comments.add(comment);
+
+      // update the post document in firestore
+      await postCollection.doc(postId).update({
+        'comments': post.comments.map((comment) => comment.toJson()).toList(),
+      });
+    } else {
+      throw Exception("Post not found");
+    }
+  } catch (e) {
+    throw Exception("Error adding comment: $e");
+  }
+}
+
+@override
+Future<void> deleteComment(String postId, String commentId) async {
+  try {
+    final postDoc = await postCollection.doc(postId).get();
+
+    if (postDoc.exists) {
+      final post = Post.fromJson(postDoc.data() as Map<String, dynamic>);
+      
+      // remove comment by id
+      post.comments.removeWhere((comment) => comment.id == commentId);
+      
+      await postCollection.doc(postId).update({
+        'comments': post.comments.map((comment) => comment.toJson()).toList(),
+      });
+    } else {
+      throw Exception("Post not found");
+    }
+  } catch (e) {
+    throw Exception("Error deleting comment: $e");
   }
 }
 }
