@@ -9,6 +9,7 @@ import 'package:instagram/features/auth/presentation/components/stext_field.dart
 import 'package:instagram/features/profile/domain/entity/profile_user.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_state.dart';
+import 'package:instagram/responsive/constrained_scaffold.dart';
 
 class EditProfilePage extends StatefulWidget {
   final ProfileUser user;
@@ -97,7 +98,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Widget buildEditPage({double uploadProgress = 0.0}) {
-    return Scaffold(
+    return ConstrainedScaffold(
       appBar: AppBar(
         title: Text('Edit Profile'),
         foregroundColor: Theme.of(context).colorScheme.primary,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/features/auth/presentation/pages/login_page.dart';
 import 'package:instagram/features/auth/presentation/pages/register_page.dart';
+import 'package:instagram/responsive/constrained_scaffold.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -24,7 +25,7 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ConstrainedScaffold(
       body: AnimatedSwitcher(
         duration: const Duration(milliseconds: 300),
         child: showLoginPage 

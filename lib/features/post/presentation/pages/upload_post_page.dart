@@ -9,7 +9,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:instagram/features/post/domain/entity/post.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
-import 'package:flutter/foundation.dart';  
+import 'package:flutter/foundation.dart';
+import 'package:instagram/responsive/constrained_scaffold.dart';  
 
 
 class UploadPostPage extends StatefulWidget {
@@ -123,7 +124,7 @@ final postCubit = context.read<PostCubit>();
   }
 
 Widget buildUploadPage() {
-  return Scaffold(
+  return ConstrainedScaffold(
     // APP BAR
     appBar: AppBar(
       title: const Text("Create Post"),

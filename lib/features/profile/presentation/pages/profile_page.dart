@@ -14,6 +14,7 @@ import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart
 import 'package:instagram/features/profile/presentation/cubit/profile_state.dart';
 import 'package:instagram/features/profile/presentation/pages/edit_profile_page.dart';
 import 'package:instagram/features/profile/presentation/pages/follower_page.dart';
+import 'package:instagram/responsive/constrained_scaffold.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({required this.uid, super.key});
@@ -79,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (context, state) {
         if (state is ProfileLoaded) {
           final loadedUser = state.user;
-          return Scaffold(
+          return ConstrainedScaffold(
             appBar: AppBar(
               title: Text(
                 loadedUser.name,

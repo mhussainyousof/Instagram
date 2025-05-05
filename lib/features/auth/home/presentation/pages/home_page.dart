@@ -5,6 +5,7 @@ import 'package:instagram/features/post/presentation/components/post_tile.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
 import 'package:instagram/features/post/presentation/pages/upload_post_page.dart';
+import 'package:instagram/responsive/constrained_scaffold.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ConstrainedScaffold(
       drawer: MyDrawer(),
       appBar: AppBar(
         title: const Text("Home"),

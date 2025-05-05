@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/auth/presentation/components/my_button.dart';
 import 'package:instagram/features/auth/presentation/components/stext_field.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:instagram/responsive/constrained_scaffold.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? togglePages;
@@ -51,7 +52,7 @@ void dispose() {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return  ConstrainedScaffold(
       body: SafeArea(
   child: Center(
     child: Padding(
