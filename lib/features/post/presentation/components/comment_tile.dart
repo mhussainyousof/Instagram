@@ -62,7 +62,7 @@ class _CommentTileState extends State<CommentTile> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0),
+      padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
       child: Row(
         children: [
           // name

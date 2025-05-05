@@ -58,7 +58,7 @@ class MyDrawer extends StatelessWidget {
               //! settings tile
               MyDrawerTile(
                 title: "S E T T I N G S",
-                icon: Iconsax.setting_2,
+                icon: Iconsax.setting,
                 onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingsPage())),
               ),
               Spacer(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:instagram/features/auth/presentation/components/my_button.dart';
 import 'package:instagram/features/auth/presentation/components/stext_field.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
@@ -80,7 +81,7 @@ void dispose (){
           children: [
             //! logo
             Icon(
-              Icons.lock_open_rounded,
+              Iconsax.unlock,
               size: 80,
               color: Theme.of(context).colorScheme.primary,
             ),

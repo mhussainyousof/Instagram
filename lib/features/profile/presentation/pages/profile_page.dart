@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:instagram/features/auth/domain/entity/app_user.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/post/presentation/components/post_tile.dart';
@@ -40,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void followButtonPressed() {
     final profileState = profileCubit.state;
     if (profileState is! ProfileLoaded) {
-      return; // return if profile is not loaded
+      return;
     }
 
     final profileUser = profileState.user;
@@ -101,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                     icon: Icon(
-                      Icons.settings_outlined,
+                      Iconsax.cpu_setting,
                       color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
@@ -125,22 +126,22 @@ class _ProfilePageState extends State<ProfilePage> {
                 CachedNetworkImage(
                   imageUrl: loadedUser.profileImageUrl,
                   placeholder:
-                      (context, url) => const CircularProgressIndicator(),
+                      (context, url) => Center(child: const CircularProgressIndicator()),
                   errorWidget:
                       (context, url, error) => Icon(
-                        Icons.person,
+                        Iconsax.user,
                         size: 72,
                         color: Theme.of(context).colorScheme.primary,
                       ),
                   imageBuilder:
                       (context, imageProvider) => Container(
-                        width: 120,
-                        height: 120,
+                        width: 160,
+                        height: 160,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             image: imageProvider,
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                           ),
                         ),
                       ),

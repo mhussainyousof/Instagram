@@ -13,6 +13,7 @@ import 'package:instagram/features/post/presentation/cubit/post_state.dart';
 import 'package:instagram/features/profile/domain/entity/profile_user.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:instagram/features/profile/presentation/pages/profile_page.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class PostTile extends StatefulWidget {
   final Post post;
@@ -186,18 +187,18 @@ class _PostTileState extends State<PostTile> {
   // BUILD UI
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.secondary,
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap:
-                () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(uid: widget.post.userId),
-                  ),
+    return Column(
+      children: [
+        GestureDetector(
+          onTap:
+              () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfilePage(uid: widget.post.userId),
                 ),
+              ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -209,8 +210,8 @@ class _PostTileState extends State<PostTile> {
                               const Icon(Iconsax.user_minus),
                       imageBuilder:
                           (context, imageProvider) => Container(
-                            width: 40,
-                            height: 40,
+                            width: 30,
+                            height: 30,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
@@ -221,7 +222,7 @@ class _PostTileState extends State<PostTile> {
                           ),
                     )
                     : const Icon(Iconsax.user),
-
+                
                 SizedBox(width: 10),
                 // name
                 Text(
@@ -230,142 +231,141 @@ class _PostTileState extends State<PostTile> {
                     color: Theme.of(context).colorScheme.inversePrimary,
                   ),
                 ),
-
+                
                 Spacer(),
                 //! delete button
                 if (isOwnPost)
                   GestureDetector(
                     onTap: showOptions,
-                    child: Icon(Iconsax.trash, color: Colors.grey.shade600),
+                    child: Icon(Iconsax.trash, color: Colors.grey.shade600, size: 20),
                   ),
               ],
             ),
           ),
-          CachedNetworkImage(
-            imageUrl: widget.post.imageUrl,
-            height: 430,
-            width: double.infinity,
-            fit: BoxFit.cover,
-            placeholder:
-                (context, url) =>
-                    Container(height: 430, color: Colors.grey[200]),
-            errorWidget:
-                (context, url, error) => Container(
-                  height: 430,
-                  color: Colors.grey[200],
-                  child: Icon(Iconsax.warning_2, size: 40, color: Colors.red),
-                ),
-          ),
-
-          //! Post caption and actions
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(widget.post.text),
-          ),
-          //! Buttons -> like, comment, timestamp
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 50,
-                  child: Row(
-                    children: [
-                      // like button
-                      GestureDetector(
-                        onTap: toggleLikePost,
-                        child: Icon(
-                          widget.post.likes.contains(currentUser!.uid)
-                              ? Iconsax.heart_search1
-                              :Iconsax.heart ,
-            
-                          color:
-                              widget.post.likes.contains(currentUser!.uid)
-                                  ? Colors.red
-                                  : Theme.of(context).colorScheme.primary,
-                        ),
+        ),
+        CachedNetworkImage(
+          imageUrl: widget.post.imageUrl,
+          height: 430,
+          width: double.infinity,
+          fit: BoxFit.cover,
+          placeholder:
+              (context, url) =>
+                  Container(height: 430, color: Colors.grey[200]),
+          errorWidget:
+              (context, url, error) => Container(
+                height: 430,
+                color: Colors.grey[200],
+                child: Icon(Iconsax.warning_2, size: 40, color: Colors.red),
+              ),
+        ),
+    
+        //! Post caption and actions
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(widget.post.text),
+        ),
+        //! Buttons -> like, comment, timestamp
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 50,
+                child: Row(
+                  children: [
+                    // like button
+                    GestureDetector(
+                      onTap: toggleLikePost,
+                      child: Icon(
+                        widget.post.likes.contains(currentUser!.uid)
+                            ? Iconsax.heart_search1
+                            : Iconsax.heart,
+    
+                        color:
+                            widget.post.likes.contains(currentUser!.uid)
+                                ? Colors.red
+                                : Theme.of(context).colorScheme.primary,
                       ),
-                      SizedBox(width: 5),
-                      Text(
-                        widget.post.likes.length.toString(),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 12,
-                        ),
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      widget.post.likes.length.toString(),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 12,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                // comment button
-                GestureDetector(
-                  onTap: openNewCommentBox,
-                  child: Icon(
-                   Iconsax. message_favorite,
-                    color: Theme.of(context).colorScheme.primary,
-                  ), // Icon
-                ), // GestureDetector
-            
-                const SizedBox(width: 5),
-            
-                Text(
-                  widget.post.comments.length.toString(),
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    fontSize: 12,
-                  ),
+              ),
+              // comment button
+              GestureDetector(
+                onTap: openNewCommentBox,
+                child: Icon(
+                  Iconsax.message_favorite,
+                  color: Theme.of(context).colorScheme.primary,
+                ), // Icon
+              ), // GestureDetector
+    
+              const SizedBox(width: 5),
+    
+              Text(
+                widget.post.comments.length.toString(),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontSize: 12,
                 ),
-            
-                const Spacer(), // Pushes timestamp to the right
-                // Timestamp
-                Text(
-                  widget.post.timestamp.toString(),
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-              ],
-            ),
+              ),
+    
+              const Spacer(), // Pushes timestamp to the right
+              // Timestamp
+              Text(
+                timeago.format(widget.post.timestamp, locale: 'en_short'),
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
           ),
-
-
-          // COMMENT SECTION
-          BlocBuilder<PostCubit, PostState>(
-            builder: (context, state) {
-              // LOADED
-              if (state is PostsLoaded) {
-                // final individual post
-                final post = state.posts.firstWhere(
-                  (post) => post.id == widget.post.id,
+        ),
+    
+        // COMMENT SECTION
+        BlocBuilder<PostCubit, PostState>(
+          builder: (context, state) {
+            // LOADED
+            if (state is PostsLoaded) {
+              // final individual post
+              final post = state.posts.firstWhere(
+                (post) => post.id == widget.post.id,
+              );
+    
+              if (post.comments.isNotEmpty) {
+                //! how many comments to show
+                int showCommentCount = post.comments.length;
+    
+                //! comment section
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: showCommentCount,
+                  itemBuilder: (context, index) {
+                    // get individual comment
+                    final comment = post.comments[index];
+    
+                    //! comment tile UI
+                    return CommentTile(comment: comment);
+                  },
                 );
-
-                if (post.comments.isNotEmpty) {
-                  //! how many comments to show
-                  int showCommentCount = post.comments.length;
-
-                  //! comment section
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: showCommentCount,
-                    itemBuilder: (context, index) {
-                      // get individual comment
-                      final comment = post.comments[index];
-
-                      //! comment tile UI
-                      return CommentTile(comment: comment);
-                    },
-                  );
-                }
               }
-              if (state is PostsLoading) {
-                return Center(child: CircularProgressIndicator());
-              } else if (state is PostsError) {
-                return Center(child: Text(state.message));
-              } else {
-                return SizedBox.shrink();
-              }
-            },
-          ),
-        ],
-      ),
+            }
+            if (state is PostsLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is PostsError) {
+              return Center(child: Text(state.message));
+            } else {
+              return SizedBox.shrink();
+            }
+          },
+        ),
+      ],
     );
   }
 }
