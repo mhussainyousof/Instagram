@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/auth/home/presentation/components/my_drawer_tile.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/profile/presentation/pages/profile_page.dart';
+import 'package:instagram/setting.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -49,14 +50,14 @@ class MyDrawer extends StatelessWidget {
               MyDrawerTile(
                 title: "S E A R C H",
                 icon: Icons.search,
-                onTap: () {},
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingsPage())),
               ),
 
               //! settings tile
               MyDrawerTile(
                 title: "S E T T I N G S",
                 icon: Icons.settings,
-                onTap: () {},
+                onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingsPage())),
               ),
               Spacer(),
               //! logout tile

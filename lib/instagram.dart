@@ -13,10 +13,11 @@ import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart
 import 'package:instagram/features/search/data/firebase_search_repo.dart';
 import 'package:instagram/features/search/presentation/cubit/search_cubit.dart';
 import 'package:instagram/theme/light_mode.dart';
+import 'package:instagram/theme/theme_cubit.dart';
 
 class MyApp extends StatelessWidget {
-   MyApp({super.key});
-  
+  MyApp({super.key});
+
   final firebaseAuthRepo = FirebaseAuthRepo();
   final firebaseProfileRepo = FirebaseProfileRepo();
   final firebaseStorageRepo = CloudinaryStorageRepo();
@@ -29,50 +30,62 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthCubit>(
-          create: (context) => AuthCubit(authRepo: firebaseAuthRepo)..checkAuth(),
+          create:
+              (context) => AuthCubit(authRepo: firebaseAuthRepo)..checkAuth(),
         ),
         BlocProvider<ProfileCubit>(
-          create: (context) => ProfileCubit(profileRepo: firebaseProfileRepo, storageRepo: firebaseStorageRepo),
+          create:
+              (context) => ProfileCubit(
+                profileRepo: firebaseProfileRepo,
+                storageRepo: firebaseStorageRepo,
+              ),
         ),
         BlocProvider<PostCubit>(
-          create: (context) => PostCubit(storageRepo: firebaseStorageRepo, postRepo: firebasePostRepo),
+          create:
+              (context) => PostCubit(
+                storageRepo: firebaseStorageRepo,
+                postRepo: firebasePostRepo,
+              ),
         ),
         BlocProvider<SearchCubit>(
           create: (context) => SearchCubit(searchRepo: firebaseSearchRepo),
         ),
+        BlocProvider<ThemeCubit>(create: (context) => ThemeCubit()),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: lightMode,
-        home: BlocConsumer<AuthCubit, AuthState>(
+      child: BlocBuilder<ThemeCubit, ThemeData>(
+        builder:
+            (context, currentTheme) => MaterialApp(
+              debugShowCheckedModeBanner: false,
+              theme: currentTheme,
+              home: BlocConsumer<AuthCubit, AuthState>(
+                //! listens for error
+                listener: (context, state) {
+                  if (state is AuthError) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(state.message)));
+                  }
+                },
+                builder: (context, authState) {
+                  print(authState);
 
-          //! listens for error
-          listener: (context, state) {
-            if(state is AuthError){
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message)));
-            }
-          },
-          builder: (context, authState) {
-            print(authState);
-            
-            //! unauthorized -> auth page (login/register)
-            if (authState is Unauthenticated) {
-              return const AuthPage();
-            }
-            
-            //! authenticated -> home page
-            if (authState is Authenticated) {
-              return const HomePage();
-            }
-            
-            //! loading or initial state
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
+                  //! unauthorized -> auth page (login/register)
+                  if (authState is Unauthenticated) {
+                    return const AuthPage();
+                  }
+
+                  //! authenticated -> home page
+                  if (authState is Authenticated) {
+                    return const HomePage();
+                  }
+
+                  //! loading or initial state
+                  return const Scaffold(
+                    body: Center(child: CircularProgressIndicator()),
+                  );
+                },
               ),
-            );
-          },
-        ),
+            ),
       ),
     );
   }
