@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:instagram/features/auth/home/presentation/components/my_drawer_tile.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/profile/presentation/pages/profile_page.dart';
+import 'package:instagram/features/search/presentation/pages/search_page.dart';
 import 'package:instagram/setting.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -21,7 +23,7 @@ class MyDrawer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 50.0),
                 child: Icon(
-                  Icons.person,
+                  Iconsax.user,
                   size: 80,
                   color: Theme.of(context).colorScheme.primary,
                 ),
@@ -30,11 +32,11 @@ class MyDrawer extends StatelessWidget {
               Divider(color: Theme.of(context).colorScheme.secondary),
 
               //! home tile
-              MyDrawerTile(title: "H O M E", icon: Icons.home, onTap: () => Navigator.of(context).pop()),
+              MyDrawerTile(title: "H O M E", icon: Iconsax.home, onTap: () => Navigator.of(context).pop()),
 
               MyDrawerTile(
                 title: "P R O F I L E",
-                icon: Icons.person,
+                icon: Iconsax.user,
                 onTap: () {
 
                   final user = context.read<AuthCubit>().currentUser;
@@ -49,21 +51,21 @@ class MyDrawer extends StatelessWidget {
               //! search tile
               MyDrawerTile(
                 title: "S E A R C H",
-                icon: Icons.search,
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingsPage())),
+                icon: Iconsax.search_normal,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchPage())),
               ),
 
               //! settings tile
               MyDrawerTile(
                 title: "S E T T I N G S",
-                icon: Icons.settings,
+                icon: Iconsax.setting_2,
                 onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingsPage())),
               ),
               Spacer(),
               //! logout tile
               MyDrawerTile(
                 title: "L O G O U T",
-                icon: Icons.login,
+                icon: Iconsax.logout,
                 onTap: () {context.read<AuthCubit>().logout();},
               ),
             ],
