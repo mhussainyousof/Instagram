@@ -10,6 +10,8 @@ import 'package:instagram/features/post/data/firebase_post_repo.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/profile/data/fire_base_profile_repo.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:instagram/features/search/data/firebase_search_repo.dart';
+import 'package:instagram/features/search/presentation/cubit/search_cubit.dart';
 import 'package:instagram/theme/light_mode.dart';
 
 class MyApp extends StatelessWidget {
@@ -19,6 +21,7 @@ class MyApp extends StatelessWidget {
   final firebaseProfileRepo = FirebaseProfileRepo();
   final firebaseStorageRepo = CloudinaryStorageRepo();
   final firebasePostRepo = FirebasePostRepo();
+  final firebaseSearchRepo = FirebaseSearchRepo();
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +36,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<PostCubit>(
           create: (context) => PostCubit(storageRepo: firebaseStorageRepo, postRepo: firebasePostRepo),
+        ),
+        BlocProvider<SearchCubit>(
+          create: (context) => SearchCubit(searchRepo: firebaseSearchRepo),
         ),
       ],
       child: MaterialApp(
