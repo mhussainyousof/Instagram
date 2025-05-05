@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/auth/domain/entity/app_user.dart';
@@ -7,10 +8,12 @@ import 'package:instagram/features/post/presentation/components/post_tile.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
 import 'package:instagram/features/profile/presentation/components/bio_box.dart';
-import 'package:instagram/features/profile/presentation/components/follow_button,dart';
+import 'package:instagram/features/profile/presentation/components/follow_button.dart';
+import 'package:instagram/features/profile/presentation/components/profile_stats.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_state.dart';
 import 'package:instagram/features/profile/presentation/pages/edit_profile_page.dart';
+import 'package:instagram/features/profile/presentation/pages/follower_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({required this.uid, super.key});
@@ -34,8 +37,44 @@ class _ProfilePageState extends State<ProfilePage> {
     profileCubit.fetchUserProfile(widget.uid);
   }
 
+  void followButtonPressed() {
+    final profileState = profileCubit.state;
+    if (profileState is! ProfileLoaded) {
+      return; // return if profile is not loaded
+    }
+
+    final profileUser = profileState.user;
+    final isFollowing = profileUser.followers.contains(currentUser!.uid);
+
+    // Update UI immediately
+    setState(() {
+      if (isFollowing) {
+        // Unfollow
+        profileUser.followers.remove(currentUser!.uid);
+      } else {
+        // Follow
+        profileUser.followers.add(currentUser!.uid);
+      }
+    });
+
+    // Perform actual toggle in cubit
+    profileCubit.toggleFollow(currentUser!.uid, widget.uid).catchError((error) {
+      // Revert UI update if there's an error
+      setState(() {
+        if (isFollowing) {
+          // Revert to following state
+          profileUser.followers.add(currentUser!.uid);
+        } else {
+          // Revert to unfollowed state
+          profileUser.followers.remove(currentUser!.uid);
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool isOwnPost = (widget.uid == currentUser!.uid);
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         if (state is ProfileLoaded) {
@@ -51,20 +90,21 @@ class _ProfilePageState extends State<ProfilePage> {
               elevation: 0,
               actions: [
                 // Edit profile button
-                IconButton(
-                  onPressed:
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder:
-                              (context) => EditProfilePage(user: loadedUser),
+                if (isOwnPost)
+                  IconButton(
+                    onPressed:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => EditProfilePage(user: loadedUser),
+                          ),
                         ),
-                      ),
-                  icon: Icon(
-                    Icons.settings_outlined,
-                    color: Theme.of(context).colorScheme.primary,
+                    icon: Icon(
+                      Icons.settings_outlined,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
                   ),
-                ),
               ],
             ),
             body: ListView(
@@ -79,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
-                        
+
                 const SizedBox(height: 25),
                 //! Profile picture
                 CachedNetworkImage(
@@ -105,12 +145,37 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                 ),
-                        
+
                 const SizedBox(height: 25),
 
-                FollowButton(onPressed: (){}, isFollowing: true),
-                        
-                // Bio header and box
+                ProfileStats(
+                  postCount: postCount,
+                  followerCount: loadedUser.followers.length,
+                  followingCount: loadedUser.following.length,
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (context) => FollowerPage(
+                                followers: loadedUser.followers,
+                                following: loadedUser.following,
+                              ),
+                        ),
+                      ),
+                ),
+
+                const SizedBox(height: 25),
+                if (!isOwnPost)
+                  FollowButton(
+                    onPressed: followButtonPressed,
+                    isFollowing: loadedUser.followers.contains(
+                      currentUser!.uid,
+                    ),
+                  ),
+
+                const SizedBox(height: 25),
+                //! Bio header and box
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -130,7 +195,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: 10),
                 BioBox(text: loadedUser.bio),
                 const SizedBox(height: 25),
-                        
+
                 // Posts header
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -157,9 +222,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           state.posts
                               .where((post) => post.userId == widget.uid)
                               .toList();
-                        
+
                       postCount = userPosts.length;
-                        
+
                       return ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -167,7 +232,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         itemBuilder: (context, index) {
                           // get individual post
                           final post = userPosts[index];
-                        
+
                           //! return as post tile UI
                           return PostTile(
                             post: post,
@@ -175,17 +240,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                 () => context.read<PostCubit>().deletePost(
                                   post.id,
                                 ),
-                          ); 
+                          );
                         },
-                      ); 
+                      );
                     }
-                        
-                    // posts loading
-                    else if(
-                      state is PostsLoading
-                    ){
+                    //! posts loading
+                    else if (state is PostsLoading) {
                       return const Center(child: CircularProgressIndicator());
-                    }else{
+                    } else {
                       return Center(child: Text('No posts yet...'));
                     }
                   },

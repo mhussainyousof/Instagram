@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/cloudanity/domain/storage_repo.dart';
@@ -104,11 +102,11 @@ Future<void> toggleFollow(String currentUserId, String targetUserId) async {
     // Call repository to toggle follow status
     await profileRepo.toggleFollow(currentUserId, targetUserId);
     
-    // Refresh the profile data after follow status change
-    await fetchUserProfile(targetUserId);
   } catch (e) {
     // Emit error state if something goes wrong
     emit(ProfileError("Error toggling follow: ${e.toString()}"));
   }
 }
+
+
 }
