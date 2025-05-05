@@ -66,8 +66,8 @@ class FirebaseProfileRepo implements ProfileRepo {
       if (currentUserData != null && targetUserData != null) {
         final List<String> currentFollowing =
             List<String>.from(currentUserData['following'] ?? []);
-        final List<String> targetFollowers =
-            List<String>.from(targetUserData['followers'] ?? []);
+        // final List<String> targetFollowers =
+        //     List<String>.from(targetUserData['followers'] ?? []);
 
         // Check if current user is already following target user
         if (currentFollowing.contains(targetUid)) {

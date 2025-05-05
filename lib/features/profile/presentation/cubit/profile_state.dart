@@ -26,8 +26,6 @@ class ProfileLoaded extends ProfileState {
   const ProfileLoaded(this.user);
 }
 
-/// Error state - when there's an error loading profile data
-/// 
 /// Contains an error [message] describing what went wrong
 class ProfileError extends ProfileState {
   final String message;

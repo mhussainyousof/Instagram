@@ -12,7 +12,6 @@ import 'package:instagram/features/profile/data/fire_base_profile_repo.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:instagram/features/search/data/firebase_search_repo.dart';
 import 'package:instagram/features/search/presentation/cubit/search_cubit.dart';
-import 'package:instagram/theme/light_mode.dart';
 import 'package:instagram/theme/theme_cubit.dart';
 
 class MyApp extends StatelessWidget {
@@ -67,8 +66,6 @@ class MyApp extends StatelessWidget {
                   }
                 },
                 builder: (context, authState) {
-                  print(authState);
-
                   //! unauthorized -> auth page (login/register)
                   if (authState is Unauthenticated) {
                     return const AuthPage();
