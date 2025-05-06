@@ -7,6 +7,8 @@ import 'package:instagram/features/auth/presentation/components/stext_field.dart
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/post/domain/entity/comment.dart';
 import 'package:instagram/features/post/domain/entity/post.dart';
+import 'package:instagram/features/post/presentation/components/comment_button.dart';
+import 'package:instagram/features/post/presentation/components/comment_sheet.dart';
 import 'package:instagram/features/post/presentation/components/comment_tile.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
@@ -106,36 +108,17 @@ class _PostTileState extends State<PostTile> {
   final commentTextController = TextEditingController();
 
   // open comment box -> user wants to type a new comment
-  void openNewCommentBox() {
-    showDialog(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            content: MyTextField(
-              controller: commentTextController,
-              hintText: "Type a comment",
-              obscureText: false,
-            ),
 
-            actions: [
-              // cancel button
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
-              //! save button
-              TextButton(
-                onPressed: () {
-                  addComment();
-                  Navigator.pop(context);
-                },
-                child: const Text('Save'),
-              ),
-            ],
-          ),
-    );
-  }
 
+
+void _showCommentSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (_) => CommentSheet(post: widget.post),
+  );
+}
   void addComment() {
     // create a new comment
     final newComment = Comment(
@@ -188,6 +171,7 @@ class _PostTileState extends State<PostTile> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
           onTap:
@@ -210,8 +194,8 @@ class _PostTileState extends State<PostTile> {
                               const Icon(Iconsax.user_minus),
                       imageBuilder:
                           (context, imageProvider) => Container(
-                            width: 30,
-                            height: 30,
+                            width: 40,
+                            height: 40,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
@@ -222,26 +206,44 @@ class _PostTileState extends State<PostTile> {
                           ),
                     )
                     : const Icon(Iconsax.user),
-                
+
                 SizedBox(width: 10),
                 // name
-                Text(
-                  widget.post.userName,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                  ),
+                Column(
+                  children: [
+                    Text(
+                      widget.post.userName,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                      ),
+                    ),
+                    // Timestamp
+                    Text(
+                      timeago.format(widget.post.timestamp, locale: 'en_short'),
+                      style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                    ),
+                  ],
                 ),
-                
+
                 Spacer(),
                 //! delete button
                 if (isOwnPost)
                   GestureDetector(
                     onTap: showOptions,
-                    child: Icon(Iconsax.trash, color: Colors.grey.shade600, size: 20),
+                    child: Icon(
+                      Iconsax.trash,
+                      color: Colors.grey.shade600,
+                      size: 20,
+                    ),
                   ),
               ],
             ),
           ),
+        ),
+        //! Post caption and actions
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(widget.post.text),
         ),
         CachedNetworkImage(
           imageUrl: widget.post.imageUrl,
@@ -249,8 +251,7 @@ class _PostTileState extends State<PostTile> {
           width: double.infinity,
           fit: BoxFit.cover,
           placeholder:
-              (context, url) =>
-                  Container(height: 430, color: Colors.grey[200]),
+              (context, url) => Container(height: 430, color: Colors.grey[200]),
           errorWidget:
               (context, url, error) => Container(
                 height: 430,
@@ -258,12 +259,7 @@ class _PostTileState extends State<PostTile> {
                 child: Icon(Iconsax.warning_2, size: 40, color: Colors.red),
               ),
         ),
-    
-        //! Post caption and actions
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(widget.post.text),
-        ),
+
         //! Buttons -> like, comment, timestamp
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -280,7 +276,7 @@ class _PostTileState extends State<PostTile> {
                         widget.post.likes.contains(currentUser!.uid)
                             ? Iconsax.heart_search1
                             : Iconsax.heart,
-    
+
                         color:
                             widget.post.likes.contains(currentUser!.uid)
                                 ? Colors.red
@@ -299,34 +295,15 @@ class _PostTileState extends State<PostTile> {
                 ),
               ),
               // comment button
-              GestureDetector(
-                onTap: openNewCommentBox,
-                child: Icon(
-                  Iconsax.message_favorite,
-                  color: Theme.of(context).colorScheme.primary,
-                ), // Icon
-              ), // GestureDetector
-    
-              const SizedBox(width: 5),
-    
-              Text(
-                widget.post.comments.length.toString(),
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
-                  fontSize: 12,
-                ),
-              ),
-    
-              const Spacer(), // Pushes timestamp to the right
-              // Timestamp
-              Text(
-                timeago.format(widget.post.timestamp, locale: 'en_short'),
-                style: Theme.of(context).textTheme.bodySmall,
+              CommentButton(
+                commentCount: widget.post.comments.length,
+                onTap:
+                    () => _showCommentSheet(context)
               ),
             ],
           ),
         ),
-    
+
         // COMMENT SECTION
         BlocBuilder<PostCubit, PostState>(
           builder: (context, state) {
@@ -336,11 +313,11 @@ class _PostTileState extends State<PostTile> {
               final post = state.posts.firstWhere(
                 (post) => post.id == widget.post.id,
               );
-    
+
               if (post.comments.isNotEmpty) {
                 //! how many comments to show
                 int showCommentCount = post.comments.length;
-    
+
                 //! comment section
                 return ListView.builder(
                   shrinkWrap: true,
@@ -349,7 +326,7 @@ class _PostTileState extends State<PostTile> {
                   itemBuilder: (context, index) {
                     // get individual comment
                     final comment = post.comments[index];
-    
+
                     //! comment tile UI
                     return CommentTile(comment: comment);
                   },

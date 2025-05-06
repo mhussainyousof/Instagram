@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:instagram/features/auth/home/presentation/components/my_drawer.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/post/presentation/components/post_tile.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
@@ -90,73 +89,110 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     // Instagram-like floating add button over profile picture
                     Padding(
-    padding: const EdgeInsets.only(top: 30, left: 10),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Stack(
-          clipBehavior: Clip.none,
-          children: [
-            currentProfileUser?.profileImageUrl != null
-                ? CachedNetworkImage(
-                    imageUrl: currentProfileUser!.profileImageUrl,
-                    errorWidget: (context, url, error) =>
-                        const Icon(Iconsax.user_minus),
-                    imageBuilder: (context, imageProvider) => Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                        ),
+                      padding: const EdgeInsets.only(top: 30, left: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              currentProfileUser?.profileImageUrl != null
+                                  ? Container(
+                                    padding: const EdgeInsets.all(
+                                      3,
+                                    ), // This will be the width of the border
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.pink,
+                                          Colors.yellow,
+                                          Colors.red,
+                                        ], // Instagram-like gradient colors
+                                        begin:Alignment.topLeft ,
+                                        end: Alignment.bottomLeft,
+                                      ),
+                                    ),
+                                    child: CachedNetworkImage(
+                                      imageUrl:
+                                          currentProfileUser!.profileImageUrl,
+                                      errorWidget:
+                                          (context, url, error) =>
+                                              const Icon(Iconsax.user_minus),
+                                      imageBuilder:
+                                          (context, imageProvider) => Container(
+                                            width: 80,
+                                            height: 80,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.cover,
+                                              ),
+                                              border: Border.all(
+                                                color:
+                                                    Colors
+                                                        .white, // Inner border color (optional)
+                                                width:
+                                                    2, // Inner border width (optional)
+                                              ),
+                                            ),
+                                          ),
+                                    ),
+                                  )
+                                  : const Icon(Iconsax.user, size: 40),
+                              Positioned(
+                                bottom: 0,
+                                right: 1,
+                                child: GestureDetector(
+                                  onTap:
+                                      () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) => UploadPostPage(),
+                                        ),
+                                      ),
+                                  child: Container(
+                                    width: 22,
+                                    height: 22,
+                                    decoration: BoxDecoration(
+                                      color: Colors.deepPurpleAccent,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      Iconsax.add,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: Text(
+                              'Push to post',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color:
+                                    Theme.of(
+                                      context,
+                                    ).colorScheme.inversePrimary,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  )
-                : const Icon(Iconsax.user, size: 40),
-            Positioned(
-              bottom: 0,
-              right: 1,
-              child: GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => UploadPostPage()),
-                ),
-                child: Container(
-                  width: 22,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    color: Colors.deepPurpleAccent,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 1),
-                  ),
-                  child: Icon(
-                    Iconsax.add,
-                    color: Colors.white,
-                    size: 15,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: Text(
-            'Push To post',
-            style: TextStyle(
-              fontSize: 10,
-              color:Theme.of(context).colorScheme.inversePrimary,
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
 
-                    SizedBox(height: 50),
+                    SizedBox(height: 30),
                     ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
