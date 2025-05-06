@@ -17,7 +17,7 @@ class Comment {
     required this.timestamp,
   });
 
-  // Convert comment -> json
+  //! Convert comment -> json
   Map<String, dynamic> toJson() {
     return {
       'id': id,

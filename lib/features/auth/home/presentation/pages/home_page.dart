@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Instagram-like floating add button over profile picture
+                    //! Instagram-like floating add button over profile picture
                     Padding(
                       padding: const EdgeInsets.only(top: 30, left: 10),
                       child: Column(
@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                                   ? Container(
                                     padding: const EdgeInsets.all(
                                       3,
-                                    ), // This will be the width of the border
+                                    ),
                                     decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
                                       gradient: LinearGradient(
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                                           Colors.pink,
                                           Colors.yellow,
                                           Colors.red,
-                                        ], // Instagram-like gradient colors
+                                        ], 
                                         begin:Alignment.topLeft ,
                                         end: Alignment.bottomLeft,
                                       ),
@@ -132,9 +132,9 @@ class _HomePageState extends State<HomePage> {
                                               border: Border.all(
                                                 color:
                                                     Colors
-                                                        .white, // Inner border color (optional)
+                                                        .white, 
                                                 width:
-                                                    2, // Inner border width (optional)
+                                                    2, 
                                               ),
                                             ),
                                           ),

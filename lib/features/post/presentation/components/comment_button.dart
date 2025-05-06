@@ -19,7 +19,7 @@ class CommentButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            Iconsax.message_favorite, // Customize the icon
+            Iconsax.message_favorite, 
             color: Theme.of(context).colorScheme.primary,
             size: 24,
           ),

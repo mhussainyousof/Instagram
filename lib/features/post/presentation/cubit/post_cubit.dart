@@ -79,7 +79,7 @@ Future<void> createPost(Post post, {String? imagePath, Uint8List? imageBytes}) a
     }
   }
 
-// Toggle like on a post
+//! Toggle like on a post
 Future<void> toggleLikePost(String postId, String userId) async {
   try {
     await postRepo.toggleLikePost(postId, userId);
@@ -89,7 +89,7 @@ Future<void> toggleLikePost(String postId, String userId) async {
   }
 }
 
-// Add a comment to a post
+//! Add a comment to a post
 Future<void> addComment(String postId, Comment comment) async {
   try {
     await postRepo.addComment(postId, comment);
@@ -99,7 +99,7 @@ Future<void> addComment(String postId, Comment comment) async {
   }
 }
 
-// Delete comment from a post
+//! Delete comment from a post
 Future<void> deleteComment(String postId, String commentId) async {
   try {
     await postRepo.deleteComment(postId, commentId);
