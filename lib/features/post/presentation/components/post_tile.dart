@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:instagram/features/auth/domain/entity/app_user.dart';
-import 'package:instagram/features/auth/presentation/components/stext_field.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/post/domain/entity/comment.dart';
 import 'package:instagram/features/post/domain/entity/post.dart';

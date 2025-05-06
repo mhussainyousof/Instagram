@@ -6,7 +6,6 @@ import 'package:instagram/features/post/domain/entity/post.dart';
 import 'package:instagram/features/post/presentation/components/comment_input.dart';
 import 'package:instagram/features/post/presentation/components/comment_tile.dart';
 
-import 'package:flutter/material.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 
 class CommentSheet extends StatelessWidget {
