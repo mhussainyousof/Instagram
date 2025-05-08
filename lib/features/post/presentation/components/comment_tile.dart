@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/auth/domain/entity/app_user.dart';
@@ -7,8 +8,11 @@ import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 
 class CommentTile extends StatefulWidget {
   final Comment comment;
+  String? imageUrl;
 
-  const CommentTile({super.key, required this.comment});
+   CommentTile({
+    this.imageUrl,
+    super.key, required this.comment});
 
   @override
   State<CommentTile> createState() => _CommentTileState();
@@ -65,6 +69,13 @@ class _CommentTileState extends State<CommentTile> {
       padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
       child: Row(
         children: [
+
+          CachedNetworkImage(
+            width: 30,
+            height: 30,
+            imageUrl:
+          
+           widget.imageUrl!),
           // name
           Text(
             widget.comment.userName,

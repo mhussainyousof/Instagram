@@ -295,31 +295,28 @@ class _PostTileState extends State<PostTile> {
               // comment button
               BlocBuilder<PostCubit, PostState>(
                 builder: (context, state) {
-  if (state is PostsLoaded) {
-              // final individual post
-              final post = state.posts.firstWhere(
-                (post) => post.id == widget.post.id,
+                  if (state is PostsLoaded) {
+                    //! final individual post
+                    final post = state.posts.firstWhere(
+                      (post) => post.id == widget.post.id,
+                    );
+                    
+                    
+                    if (post.comments.isNotEmpty) {
+                      return CommentButton(
+                        commentCount: widget.post.comments.length,
+                        onTap: () => _showCommentSheet(context),
+                      );
+                    }
+                  }
 
-              
-              );
-
-               if (post.comments.isNotEmpty) {
-                 return CommentButton(
-                    commentCount: widget.post.comments.length,
-                    onTap: () => _showCommentSheet(context),
-                  );
-               }
-              }
-               
-                   if (state is PostsLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is PostsError) {
-              return Center(child: Text(state.message));
-            } else {
-              return SizedBox.shrink();
-            }
-                  
-                  
+                  if (state is PostsLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state is PostsError) {
+                    return Center(child: Text(state.message));
+                  } else {
+                    return SizedBox.shrink();
+                  }
                 },
               ),
             ],
@@ -350,7 +347,8 @@ class _PostTileState extends State<PostTile> {
                     final comment = post.comments[index];
 
                     //! comment tile UI
-                    return CommentTile(comment: comment);
+                    return CommentTile(
+                      comment: comment);
                   },
                 );
               }
