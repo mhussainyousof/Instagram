@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/auth/domain/entity/app_user.dart';
@@ -8,10 +7,8 @@ import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 
 class CommentTile extends StatefulWidget {
   final Comment comment;
-  String? imageUrl;
 
-   CommentTile({
-    this.imageUrl,
+   const CommentTile({
     super.key, required this.comment});
 
   @override
@@ -34,7 +31,7 @@ class _CommentTileState extends State<CommentTile> {
     isOwnPost = (widget.comment.userId == currentUser?.uid);
   }
 
-  // show options for deletion
+  //! show options for deletion
   void showOptions() {
     showDialog(
       context: context,
@@ -42,12 +39,12 @@ class _CommentTileState extends State<CommentTile> {
           (context) => AlertDialog(
             title: const Text("Delete Comment?"),
             actions: [
-              // cancel button
+              //! cancel button
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: const Text("Cancel"),
               ), // TextButton
-              // delete button
+              //! delete button
               TextButton(
                 onPressed: () {
                   context.read<PostCubit>().deleteComment(
@@ -70,13 +67,6 @@ class _CommentTileState extends State<CommentTile> {
       child: Row(
         children: [
 
-          CachedNetworkImage(
-            width: 30,
-            height: 30,
-            imageUrl:
-          
-           widget.imageUrl!),
-          // name
           Text(
             widget.comment.userName,
             style: const TextStyle(fontWeight: FontWeight.bold),
