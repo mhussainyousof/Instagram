@@ -108,16 +108,15 @@ class _PostTileState extends State<PostTile> {
 
   // open comment box -> user wants to type a new comment
 
+  void _showCommentSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => CommentSheet(post: widget.post),
+    );
+  }
 
-
-void _showCommentSheet(BuildContext context) {
-  showModalBottomSheet(
-    context: context,
-    isScrollControlled: true,
-    backgroundColor: Colors.transparent,
-    builder: (_) => CommentSheet(post: widget.post),
-  );
-}
   void addComment() {
     // create a new comment
     final newComment = Comment(
@@ -294,10 +293,34 @@ void _showCommentSheet(BuildContext context) {
                 ),
               ),
               // comment button
-              CommentButton(
-                commentCount: widget.post.comments.length,
-                onTap:
-                    () => _showCommentSheet(context)
+              BlocBuilder<PostCubit, PostState>(
+                builder: (context, state) {
+  if (state is PostsLoaded) {
+              // final individual post
+              final post = state.posts.firstWhere(
+                (post) => post.id == widget.post.id,
+
+              
+              );
+
+               if (post.comments.isNotEmpty) {
+                 return CommentButton(
+                    commentCount: widget.post.comments.length,
+                    onTap: () => _showCommentSheet(context),
+                  );
+               }
+              }
+               
+                   if (state is PostsLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is PostsError) {
+              return Center(child: Text(state.message));
+            } else {
+              return SizedBox.shrink();
+            }
+                  
+                  
+                },
               ),
             ],
           ),
