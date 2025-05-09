@@ -174,6 +174,7 @@ class _PostTileState extends State<PostTile> {
           onTap:
               () => Navigator.push(
                 context,
+                
                 MaterialPageRoute(
                   builder: (context) => ProfilePage(uid: widget.post.userId),
                 ),
@@ -322,18 +323,26 @@ class _PostTileState extends State<PostTile> {
                   }
                 },
               ),
-              SizedBox(width: 20), // space between buttons
+              Spacer(),
               GestureDetector(
                 onTap: () {
                   context.read<PostCubit>().toggleSave(widget.post);
                 },
-                child: Icon(
-                  widget.post.isSaved ? Icons.bookmark : Icons.bookmark_outline,
-                  size: 30,
-                  color:
-                      widget.post.isSaved
-                          ? Theme.of(context).colorScheme.primary
-                          : Colors.grey,
+                child: AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  child: Icon(
+                    widget.post.isSaved ? Iconsax.bookmark : Iconsax.bookmark_2,
+                    key: ValueKey<bool>(widget.post.isSaved),
+                    size: 30,
+                    color:
+                        widget.post.isSaved
+                            ? (Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black)
+                            : (Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.grey),
+                  ),
                 ),
               ),
             ],

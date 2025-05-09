@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:instagram/features/auth/home/presentation/components/header_text.dart';
 import 'package:instagram/features/auth/home/presentation/components/my_drawer.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/post/presentation/pages/post_tile.dart';
@@ -94,85 +95,92 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Stack(
-                            clipBehavior: Clip.none,
+                          Row(
                             children: [
-                              currentProfileUser?.profileImageUrl != null
-                                  ? Container(
-                                    padding: const EdgeInsets.all(
-                                      3,
-                                    ),
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.pink,
-                                          Colors.yellow,
-                                          Colors.red,
-                                        ], 
-                                        begin:Alignment.topLeft ,
-                                        end: Alignment.bottomLeft,
-                                      ),
-                                    ),
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                          currentProfileUser!.profileImageUrl,
-                                      errorWidget:
-                                          (context, url, error) =>
-                                              const Icon(Iconsax.user_minus),
-                                      imageBuilder:
-                                          (context, imageProvider) => Container(
-                                            width: 80,
-                                            height: 80,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover,
+                             
+                              Stack(
+                                clipBehavior: Clip.none,
+                                children: [
+                                  currentProfileUser?.profileImageUrl != null
+                                      ? Container(
+                                        padding: const EdgeInsets.all(
+                                          3,
+                                        ),
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Colors.pink,
+                                              Colors.yellow,
+                                              Colors.red,
+                                            ], 
+                                            begin:Alignment.topLeft ,
+                                            end: Alignment.bottomLeft,
+                                          ),
+                                        ),
+                                        child: CachedNetworkImage(
+                                          imageUrl:
+                                              currentProfileUser!.profileImageUrl,
+                                          errorWidget:
+                                              (context, url, error) =>
+                                                  const Icon(Iconsax.user_minus),
+                                          imageBuilder:
+                                              (context, imageProvider) => Container(
+                                                width: 80,
+                                                height: 80,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  image: DecorationImage(
+                                                    image: imageProvider,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                  border: Border.all(
+                                                    color:
+                                                        Colors
+                                                            .white, 
+                                                    width:
+                                                        2, 
+                                                  ),
+                                                ),
                                               ),
-                                              border: Border.all(
-                                                color:
-                                                    Colors
-                                                        .white, 
-                                                width:
-                                                    2, 
-                                              ),
+                                        ),
+                                      )
+                                      : const Icon(Iconsax.user, size: 40),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 1,
+                                    child: GestureDetector(
+                                      onTap:
+                                          () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder:
+                                                  (context) => UploadPostPage(),
                                             ),
                                           ),
-                                    ),
-                                  )
-                                  : const Icon(Iconsax.user, size: 40),
-                              Positioned(
-                                bottom: 0,
-                                right: 1,
-                                child: GestureDetector(
-                                  onTap:
-                                      () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (context) => UploadPostPage(),
+                                      child: Container(
+                                        width: 22,
+                                        height: 22,
+                                        decoration: BoxDecoration(
+                                          color: Colors.deepPurpleAccent,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: Colors.white,
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Iconsax.add,
+                                          color: Colors.white,
+                                          size: 15,
                                         ),
                                       ),
-                                  child: Container(
-                                    width: 22,
-                                    height: 22,
-                                    decoration: BoxDecoration(
-                                      color: Colors.deepPurpleAccent,
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: Colors.white,
-                                        width: 1,
-                                      ),
-                                    ),
-                                    child: Icon(
-                                      Iconsax.add,
-                                      color: Colors.white,
-                                      size: 15,
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
+                              Spacer(),
+                               ProfileHeader()
                             ],
                           ),
                           const SizedBox(height: 8),

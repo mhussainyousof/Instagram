@@ -127,10 +127,8 @@ Future<void> deleteComment(String postId, String commentId) async {
 
 Future<void> toggleSave(Post post) async {
   try {
-    await postRepo.toggleSavePost(post.id, !post.isSaved);
-
+    // Immediately update the UI with the new saved state (optimistic update)
     final currentState = state;
-
     if (currentState is PostsLoaded) {
       final updatedPosts = currentState.posts.map((p) {
         if (p.id == post.id) {
@@ -139,12 +137,35 @@ Future<void> toggleSave(Post post) async {
         return p;
       }).toList();
 
+      // Emit the updated state with the immediate UI update
       emit(PostsLoaded(updatedPosts));
     }
+
+    // Perform the async operation (network request or database update)
+    await postRepo.toggleSavePost(post.id, !post.isSaved);
+
+    // If needed, you can do another update after the async operation if there's any additional state logic.
+    // For example, if the save operation failed and you want to revert the state, you can do it here.
+
   } catch (e) {
+    // If the operation fails, emit the error state
     emit(PostsError("Failed to toggle save: $e"));
+
+    // Optionally, revert the optimistic update if there’s an error
+    final currentState = state;
+    if (currentState is PostsLoaded) {
+      final updatedPosts = currentState.posts.map((p) {
+        if (p.id == post.id) {
+          return p.copyWith(isSaved: post.isSaved); // Revert back to original state
+        }
+        return p;
+      }).toList();
+      
+      emit(PostsLoaded(updatedPosts)); // Emit the reverted state
+    }
   }
 }
+
 
 
 }
