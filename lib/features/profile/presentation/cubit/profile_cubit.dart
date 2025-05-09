@@ -13,6 +13,7 @@ import 'package:instagram/features/profile/presentation/cubit/profile_state.dart
       ProfileCubit({required this.profileRepo, required this.storageRepo})
         : super(const ProfileInitial());
 
+
       //! Fetch user profile using repo
       Future<void> fetchUserProfile(String uid) async {
         try {
@@ -23,6 +24,9 @@ import 'package:instagram/features/profile/presentation/cubit/profile_state.dart
           emit(ProfileError(e.toString()));
         }
       }
+
+
+      
 
       /// Fetches a user profile by their UID
 /// Useful for loading multiple profiles (e.g., for posts in a feed)

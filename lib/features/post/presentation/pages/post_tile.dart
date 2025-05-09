@@ -174,7 +174,6 @@ class _PostTileState extends State<PostTile> {
           onTap:
               () => Navigator.push(
                 context,
-                
                 MaterialPageRoute(
                   builder: (context) => ProfilePage(uid: widget.post.userId),
                 ),
