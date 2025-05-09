@@ -71,6 +71,8 @@ class CommentSheet extends StatelessWidget {
       timestamp: DateTime.now(),
     );
 
+    
+
     postCubit.addComment(post.id, newComment);
   }
 
@@ -108,3 +110,4 @@ class CommentList extends StatelessWidget {
     );
   }
 }
+ 

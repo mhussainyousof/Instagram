@@ -19,7 +19,7 @@ class ProfileHeader extends StatelessWidget {
             fontWeight: FontWeight.bold,
             foreground: Paint()
               ..shader = LinearGradient( // Instagram-like gradient
-                colors: [Colors.pink, Colors.purple, Colors.green],
+                colors: [Colors.pink, Colors.purple, Colors.deepPurpleAccent],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomLeft,
               ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0)),

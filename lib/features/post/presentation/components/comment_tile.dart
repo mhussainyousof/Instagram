@@ -8,8 +8,7 @@ import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 class CommentTile extends StatefulWidget {
   final Comment comment;
 
-   const CommentTile({
-    super.key, required this.comment});
+  const CommentTile({super.key, required this.comment});
 
   @override
   State<CommentTile> createState() => _CommentTileState();
@@ -65,29 +64,29 @@ class _CommentTileState extends State<CommentTile> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Text(
             widget.comment.userName,
             style: const TextStyle(fontWeight: FontWeight.bold),
-          ), // Text
+          ),
 
           const SizedBox(width: 10),
 
-          // comment text
-          Text(widget.comment.text),
-
-          const Spacer(),
-
-          //! delete button
-          if (isOwnPost)
-            GestureDetector(
-              onTap: showOptions,
-              child: Icon(
-                Icons.more_horiz,
-                color: Theme.of(context).colorScheme.primary,
+          //! comment text
+          Expanded(
+            child: GestureDetector(
+              onLongPress:
+                  isOwnPost
+                      ? showOptions
+                      : null,
+              child: Text(
+                widget.comment.text,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
-            ), 
+            ),
+          ),
         ],
       ),
     );
