@@ -1,11 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:instagram/features/post/domain/entity/post.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
 import 'package:instagram/features/post/presentation/pages/post_tile.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class SavedPostsScreen extends StatelessWidget {
   const SavedPostsScreen({super.key});
