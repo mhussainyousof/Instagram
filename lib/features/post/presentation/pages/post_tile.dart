@@ -8,7 +8,6 @@ import 'package:instagram/features/post/domain/entity/comment.dart';
 import 'package:instagram/features/post/domain/entity/post.dart';
 import 'package:instagram/features/post/presentation/components/comment_button.dart';
 import 'package:instagram/features/post/presentation/components/comment_sheet.dart';
-import 'package:instagram/features/post/presentation/components/comment_tile.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
 import 'package:instagram/features/profile/domain/entity/profile_user.dart';
