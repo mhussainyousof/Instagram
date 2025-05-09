@@ -135,4 +135,16 @@ Future<void> deleteComment(String postId, String commentId) async {
     throw Exception("Error deleting comment: $e");
   }
 }
+
+ @override
+Future<void> toggleSavePost(String postId, bool isSaved) async {
+  try {
+    await postCollection.doc(postId).update({
+      'isSaved': isSaved,
+    });
+  } catch (e) {
+    throw Exception("Error toggling save: $e");
+  }
+}
+
 }

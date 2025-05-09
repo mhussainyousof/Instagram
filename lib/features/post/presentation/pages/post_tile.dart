@@ -259,7 +259,12 @@ class _PostTileState extends State<PostTile> {
 
         //! Buttons -> like, comment, timestamp
         Padding(
-          padding: const EdgeInsets.only(bottom: 20, left: 12, top: 10, right: 10),
+          padding: const EdgeInsets.only(
+            bottom: 20,
+            left: 12,
+            top: 10,
+            right: 10,
+          ),
           child: Row(
             children: [
               SizedBox(
@@ -270,11 +275,10 @@ class _PostTileState extends State<PostTile> {
                     GestureDetector(
                       onTap: toggleLikePost,
                       child: Icon(
-                        
                         widget.post.likes.contains(currentUser!.uid)
                             ? Iconsax.heart_search1
                             : Iconsax.heart,
-                          size: 35,
+                        size: 35,
                         color:
                             widget.post.likes.contains(currentUser!.uid)
                                 ? Colors.red
@@ -300,8 +304,7 @@ class _PostTileState extends State<PostTile> {
                     final post = state.posts.firstWhere(
                       (post) => post.id == widget.post.id,
                     );
-                    
-                    
+
                     if (post.comments.isNotEmpty) {
                       return CommentButton(
                         commentCount: widget.post.comments.length,
@@ -318,6 +321,20 @@ class _PostTileState extends State<PostTile> {
                     return SizedBox.shrink();
                   }
                 },
+              ),
+              SizedBox(width: 20), // space between buttons
+              GestureDetector(
+                onTap: () {
+                  context.read<PostCubit>().toggleSave(widget.post);
+                },
+                child: Icon(
+                  widget.post.isSaved ? Icons.bookmark : Icons.bookmark_outline,
+                  size: 30,
+                  color:
+                      widget.post.isSaved
+                          ? Theme.of(context).colorScheme.primary
+                          : Colors.grey,
+                ),
               ),
             ],
           ),

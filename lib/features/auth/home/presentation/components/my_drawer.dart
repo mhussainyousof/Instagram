@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:instagram/features/auth/home/presentation/components/my_drawer_tile.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:instagram/features/post/presentation/pages/saved_posts.dart';
 import 'package:instagram/features/profile/presentation/pages/profile_page.dart';
 import 'package:instagram/features/search/presentation/pages/search_page.dart';
 import 'package:instagram/setting.dart';
@@ -53,6 +54,11 @@ class MyDrawer extends StatelessWidget {
                 title: "S E A R C H",
                 icon: Iconsax.search_normal,
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> SearchPage())),
+              ),
+              MyDrawerTile(
+                title: "Saved Posts",
+                icon: Iconsax.search_normal,
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> SavedPostsScreen())),
               ),
 
               //! settings tile

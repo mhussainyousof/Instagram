@@ -125,4 +125,26 @@ Future<void> deleteComment(String postId, String commentId) async {
   }
 }
 
+Future<void> toggleSave(Post post) async {
+  try {
+    await postRepo.toggleSavePost(post.id, !post.isSaved);
+
+    final currentState = state;
+
+    if (currentState is PostsLoaded) {
+      final updatedPosts = currentState.posts.map((p) {
+        if (p.id == post.id) {
+          return p.copyWith(isSaved: !p.isSaved);
+        }
+        return p;
+      }).toList();
+
+      emit(PostsLoaded(updatedPosts));
+    }
+  } catch (e) {
+    emit(PostsError("Failed to toggle save: $e"));
+  }
+}
+
+
 }

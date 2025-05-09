@@ -10,6 +10,7 @@ class Post {
   final DateTime timestamp;
   final List<String> likes;
   final List<Comment> comments;
+  final bool isSaved; // NEW FIELD
 
   Post({
     required this.id,
@@ -20,9 +21,10 @@ class Post {
     required this.timestamp,
     required this.likes,
     required this.comments,
+    this.isSaved = false, // default to false
   });
 
-   Post copyWith({
+  Post copyWith({
     String? id,
     String? userId,
     String? userName,
@@ -31,6 +33,7 @@ class Post {
     DateTime? timestamp,
     List<String>? likes,
     List<Comment>? comments,
+    bool? isSaved,
   }) {
     return Post(
       id: id ?? this.id,
@@ -41,10 +44,10 @@ class Post {
       timestamp: timestamp ?? this.timestamp,
       likes: likes ?? this.likes,
       comments: comments ?? this.comments,
+      isSaved: isSaved ?? this.isSaved,
     );
   }
 
-  // Convert Post to JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -54,15 +57,14 @@ class Post {
       'imageUrl': imageUrl,
       'timestamp': Timestamp.fromDate(timestamp),
       'likes': likes,
-      'comments': comments.map((commetn) => commetn.toString()).toList(),
+      'comments': comments.map((comment) => comment.toJson()).toList(),
+      'isSaved': isSaved,
     };
   }
 
-  // Create Post from JSON
   factory Post.fromJson(Map<String, dynamic> json) {
-    final List<Comment> comments =
-        (json['comments'] as List<dynamic>?)
-            ?.map((commentsJson) => Comment.fromJson(commentsJson))
+    final List<Comment> comments = (json['comments'] as List<dynamic>?)
+            ?.map((commentJson) => Comment.fromJson(commentJson))
             .toList() ??
         [];
     return Post(
@@ -74,6 +76,8 @@ class Post {
       timestamp: (json['timestamp'] as Timestamp).toDate(),
       likes: List<String>.from(json['likes'] ?? []),
       comments: comments,
+      isSaved: json['isSaved'] as bool? ?? false,
     );
   }
 }
+
