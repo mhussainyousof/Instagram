@@ -22,16 +22,25 @@ class Post {
     required this.comments,
   });
 
-  Post copyWith({String? imageUrl}) {
+   Post copyWith({
+    String? id,
+    String? userId,
+    String? userName,
+    String? text,
+    String? imageUrl,
+    DateTime? timestamp,
+    List<String>? likes,
+    List<Comment>? comments,
+  }) {
     return Post(
-      id: id,
-      userId: userId,
-      userName: userName,
-      text: text,
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      userName: userName ?? this.userName,
+      text: text ?? this.text,
       imageUrl: imageUrl ?? this.imageUrl,
-      timestamp: timestamp,
-      likes: likes,
-      comments: comments,
+      timestamp: timestamp ?? this.timestamp,
+      likes: likes ?? this.likes,
+      comments: comments ?? this.comments,
     );
   }
 

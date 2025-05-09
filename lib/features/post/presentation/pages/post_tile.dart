@@ -180,7 +180,7 @@ class _PostTileState extends State<PostTile> {
                 ),
               ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
+            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 7),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -240,7 +240,7 @@ class _PostTileState extends State<PostTile> {
         ),
         //! Post caption and actions
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(left: 7),
           child: Text(widget.post.text),
         ),
         CachedNetworkImage(
@@ -260,7 +260,7 @@ class _PostTileState extends State<PostTile> {
 
         //! Buttons -> like, comment, timestamp
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(bottom: 20, left: 12, top: 10, right: 10),
           child: Row(
             children: [
               SizedBox(
@@ -271,10 +271,11 @@ class _PostTileState extends State<PostTile> {
                     GestureDetector(
                       onTap: toggleLikePost,
                       child: Icon(
+                        
                         widget.post.likes.contains(currentUser!.uid)
                             ? Iconsax.heart_search1
                             : Iconsax.heart,
-
+                          size: 35,
                         color:
                             widget.post.likes.contains(currentUser!.uid)
                                 ? Colors.red
@@ -321,46 +322,6 @@ class _PostTileState extends State<PostTile> {
               ),
             ],
           ),
-        ),
-
-        // COMMENT SECTION
-        BlocBuilder<PostCubit, PostState>(
-          builder: (context, state) {
-            // LOADED
-            if (state is PostsLoaded) {
-              // final individual post
-              final post = state.posts.firstWhere(
-                (post) => post.id == widget.post.id,
-              );
-
-              if (post.comments.isNotEmpty) {
-                //! how many comments to show
-                int showCommentCount = post.comments.length;
-
-                //! comment section
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: showCommentCount,
-                  itemBuilder: (context, index) {
-                    // get individual comment
-                    final comment = post.comments[index];
-
-                    //! comment tile UI
-                    return CommentTile(
-                      comment: comment);
-                  },
-                );
-              }
-            }
-            if (state is PostsLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is PostsError) {
-              return Center(child: Text(state.message));
-            } else {
-              return SizedBox.shrink();
-            }
-          },
         ),
       ],
     );

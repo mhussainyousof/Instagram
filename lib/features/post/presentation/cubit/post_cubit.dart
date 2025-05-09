@@ -93,18 +93,21 @@ Future<void> toggleLikePost(String postId, String userId) async {
 Future<void> addComment(String postId, Comment comment) async {
   try {
     await postRepo.addComment(postId, comment);
-      final currentState = state;
+    final currentState = state;
+    
     if (currentState is PostsLoaded) {
-      // Find the post in the current list of posts
+      // Create a new list with updated post
       final updatedPosts = currentState.posts.map((post) {
         if (post.id == postId) {
-          // Update the post's comments with the new comment
-          post.comments.add(comment);
+          // Create a NEW post with updated comments
+          return post.copyWith(
+            comments: List<Comment>.from(post.comments)..add(comment),
+          );
         }
         return post;
       }).toList();
 
-      // Emit the updated list of posts (with the updated post)
+      // Emit the new state with updated posts
       emit(PostsLoaded(updatedPosts));
     }
   } catch (e) {
