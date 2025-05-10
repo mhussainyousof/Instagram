@@ -207,6 +207,7 @@ class _PostTileState extends State<PostTile> {
                 SizedBox(width: 10),
                 // name
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.post.userName,
@@ -244,7 +245,8 @@ class _PostTileState extends State<PostTile> {
         ),
         CachedNetworkImage(
           imageUrl: widget.post.imageUrl,
-          height: 430,
+
+          // height: 430,
           width: double.infinity,
           fit: BoxFit.cover,
           placeholder:
@@ -305,12 +307,10 @@ class _PostTileState extends State<PostTile> {
                       (post) => post.id == widget.post.id,
                     );
 
-                    if (post.comments.isNotEmpty) {
-                      return CommentButton(
-                        commentCount: widget.post.comments.length,
-                        onTap: () => _showCommentSheet(context),
-                      );
-                    }
+                    return CommentButton(
+                      commentCount: post.comments.length,
+                      onTap: () => _showCommentSheet(context),
+                    );
                   }
 
                   if (state is PostsLoading) {

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
@@ -80,12 +81,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (isOwnProfile)
                   IconButton(
                     icon: Icon(Iconsax.edit, size: 24),
-                    onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => EditProfilePage(user: user),
-                      ),
-                    ),
+                    onPressed:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditProfilePage(user: user),
+                          ),
+                        ),
                   ),
               ],
             ),
@@ -93,31 +95,36 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: EdgeInsets.all(16),
               child: Column(
                 children: [
-                  // Profile Header Section
+                  //! Profile Header Section
                   Column(
                     children: [
-                      // Profile Picture
+                      //! Profile Picture
                       Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
+                        width: 130,
+                        height: 130,
+                        padding: const EdgeInsets.all(
+                          3,
+                        ), // This creates space for the gradient border
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.primary,
-                            width: 2,
+                          gradient: LinearGradient(
+                            colors: [Colors.yellow, Colors.pink, Colors.red],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomLeft,
                           ),
                         ),
                         child: ClipOval(
                           child: CachedNetworkImage(
                             imageUrl: user.profileImageUrl,
-                            placeholder: (context, url) => Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                            errorWidget: (context, url, error) => Icon(
-                              Icons.person,
-                              size: 48,
-                              color: Colors.grey,
-                            ),
+                            placeholder:
+                                (context, url) =>
+                                    Center(child: CircularProgressIndicator()),
+                            errorWidget:
+                                (context, url, error) => Icon(
+                                  Icons.person,
+                                  size: 48,
+                                  color: Colors.grey,
+                                ),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -126,10 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       // Email
                       Text(
                         user.email,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                       ),
                       SizedBox(height: 24),
                     ],
@@ -140,15 +144,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     postCount: postCount,
                     followerCount: user.followers.length,
                     followingCount: user.following.length,
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FollowerPage(
-                          followers: user.followers,
-                          following: user.following,
+                    onTap:
+                        () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) => FollowerPage(
+                                  followers: user.followers,
+                                  following: user.following,
+                                ),
+                          ),
                         ),
-                      ),
-                    ),
                   ),
                   SizedBox(height: 16),
 
@@ -158,9 +164,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       width: 200,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: user.followers.contains(currentUser!.uid)
-                              ? Colors.grey[300]
-                              : Theme.of(context).primaryColor,
+                          backgroundColor:
+                              user.followers.contains(currentUser!.uid)
+                                  ? Colors.grey[300]
+                                  : Theme.of(context).primaryColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -172,9 +179,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               ? 'Following'
                               : 'Follow',
                           style: TextStyle(
-                            color: user.followers.contains(currentUser!.uid)
-                                ? Colors.black
-                                : Colors.white,
+                            color:
+                                user.followers.contains(currentUser!.uid)
+                                    ? Colors.black
+                                    : Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -201,7 +209,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           width: double.infinity,
                           padding: EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            
+                            gradient: LinearGradient(
+                              colors: [Colors.redAccent, Colors.amber],
+                            ),
                             // color: Colors.grey,
                             borderRadius: BorderRadius.circular(12),
                           ),
@@ -214,65 +224,66 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   SizedBox(height: 25),
-                // Posts header
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Posts",
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                  // Posts header
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Posts",
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                // list of posts from this user
-                BlocBuilder<PostCubit, PostState>(
-                  builder: (context, state) {
-                    // posts loaded
-                    if (state is PostsLoaded) {
-                      // filter posts by user id
-                      final userPosts =
-                          state.posts
-                              .where((post) => post.userId == widget.uid)
-                              .toList();
+                  // list of posts from this user
+                  BlocBuilder<PostCubit, PostState>(
+                    builder: (context, state) {
+                      // posts loaded
+                      if (state is PostsLoaded) {
+                        // filter posts by user id
+                        final userPosts =
+                            state.posts
+                                .where((post) => post.userId == widget.uid)
+                                .toList();
 
-                      postCount = userPosts.length;
+                        postCount = userPosts.length;
 
-                      return ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: postCount,
-                        itemBuilder: (context, index) {
-                          // get individual post
-                          final post = userPosts[index];
+                        return ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: postCount,
+                          itemBuilder: (context, index) {
+                            // get individual post
+                            final post = userPosts[index];
 
-                          //! return as post tile UI
-                          return PostTile(
-                            post: post,
-                            onDeletePressed:
-                                () => context.read<PostCubit>().deletePost(
-                                  post.id,
-                                ),
-                          );
-                        },
-                      );
-                    }
-                    //! posts loading
-                    else if (state is PostsLoading) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else {
-                      return Center(child: Text('No posts yet...'));
-                    }
-                  },
-                ),
-              ],
+                            //! return as post tile UI
+                            return PostTile(
+                              post: post,
+                              onDeletePressed:
+                                  () => context.read<PostCubit>().deletePost(
+                                    post.id,
+                                  ),
+                            );
+                          },
+                        );
+                      }
+                      //! posts loading
+                      else if (state is PostsLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else {
+                        return Center(child: Text('No posts yet...'));
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
-          ));
+          );
         } else if (state is ProfileLoading) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
