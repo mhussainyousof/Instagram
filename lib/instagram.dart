@@ -49,7 +49,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<ThemeCubit>(create: (context) => ThemeCubit()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeData>(
-        builder: (context, currentTheme) => MaterialApp(
+        builder: (context, currentTheme) => 
+        MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: currentTheme,
           home: BlocConsumer<AuthCubit, AuthState>(

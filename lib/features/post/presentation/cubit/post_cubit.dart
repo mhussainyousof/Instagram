@@ -48,7 +48,7 @@ Future<void> createPost(Post post, {String? imagePath, Uint8List? imageBytes}) a
     final updatedPost = imageUrl != null ? post.copyWith(imageUrl: imageUrl) : post;
 
     await postRepo.createPost(updatedPost);
-
+    
     //! Refresh the post list (this will emit PostsLoaded inside)
     await fetchAllPosts();
 
