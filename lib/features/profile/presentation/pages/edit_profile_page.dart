@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:instagram/features/profile/domain/entity/profile_user.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:instagram/responsive/constrained_scaffold.dart';
 
 
 class EditProfilePage extends StatefulWidget {
@@ -83,7 +84,7 @@ void updateProfile() async {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ConstrainedScaffold(
       appBar: AppBar(
         title: const Text(
           'Edit Profile',

@@ -3,13 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
 import 'package:instagram/features/post/presentation/pages/post_tile.dart';
+import 'package:instagram/responsive/constrained_scaffold.dart';
 
 class SavedPostsScreen extends StatelessWidget {
   const SavedPostsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ConstrainedScaffold(
       appBar: AppBar(
         title: const Text('Saved Posts'),
       ),

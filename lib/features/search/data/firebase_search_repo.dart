@@ -8,12 +8,11 @@ class FirebaseSearchRepo implements SearchRepo {
     try {
       final result = await FirebaseFirestore.instance
           .collection("users")
-          .where('name', isGreaterThanOrEqualTo: query)
-          .where('name', isLessThanOrEqualTo: '$query\uf8ff')
           .get();
           
       return result.docs 
           .map((doc) => ProfileUser.fromJson(doc.data()))
+          .where((user) => user.name.toLowerCase().contains(query.toLowerCase()) ?? false)
           .toList();
     } catch (e) {
       throw Exception('Error searching users: $e');

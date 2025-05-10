@@ -3,6 +3,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:instagram/features/auth/home/presentation/pages/home_page.dart';
 import 'package:instagram/features/post/presentation/pages/upload_post_page.dart';
 import 'package:instagram/features/search/presentation/pages/search_page.dart';
+import 'package:instagram/responsive/constrained_scaffold.dart';
 import 'package:instagram/setting.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -40,7 +41,7 @@ class _MainNavigationState extends State<MainNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ConstrainedScaffold(
       body: PageView(
         controller: _pageController,
         physics: const NeverScrollableScrollPhysics(),

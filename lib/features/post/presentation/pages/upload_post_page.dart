@@ -10,6 +10,7 @@ import 'package:instagram/features/post/domain/entity/post.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
 import 'package:flutter/foundation.dart';
+import 'package:instagram/responsive/constrained_scaffold.dart';
 
 
 class UploadPostPage extends StatefulWidget {
@@ -52,7 +53,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
 
   void uploadPost() {
     // if (imagePickerFile == null || textController.text.isEmpty) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
+    //   ConstrainedScaffoldMessenger.of(context).showSnackBar(
     //     const SnackBar(content: Text("Please add both an image and caption")),
     //   );
     //   return;
@@ -88,8 +89,8 @@ class _UploadPostPageState extends State<UploadPostPage> {
     return BlocConsumer<PostCubit, PostState>(
       builder: (context, state) {
         if (state is PostsLoading || state is PostUploading) {
-          return Scaffold(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          return ConstrainedScaffold(
+            // backgroundColor: Theme.of(context).ConstrainedScaffoldBackgroundColor,
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -118,7 +119,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
   }
 
   Widget buildUploadPage(BuildContext context) {
-    return Scaffold(
+    return ConstrainedScaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(

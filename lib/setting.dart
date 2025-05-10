@@ -7,6 +7,7 @@ import 'package:instagram/features/post/presentation/pages/saved_posts.dart';
 import 'package:instagram/features/profile/domain/entity/profile_user.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:instagram/features/profile/presentation/pages/profile_page.dart';
+import 'package:instagram/responsive/constrained_scaffold.dart';
 import 'package:instagram/theme/theme_cubit.dart';
 
 class ProfileTab extends StatefulWidget {
@@ -46,7 +47,7 @@ class _ProfileTabState extends State<ProfileTab> {
       return const Center(child: Text('User not logged in'));
     }
 
-    return Scaffold(
+    return ConstrainedScaffold(
       body: Column(
         children: [
           Expanded(

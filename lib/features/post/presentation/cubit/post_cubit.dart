@@ -62,7 +62,7 @@ Future<void> createPost(Post post, {String? imagePath, Uint8List? imageBytes}) a
 
      Future<void> fetchAllPosts() async {
     try {
-      emit(PostsLoading());
+      // emit(PostsLoading());8
       final posts = await postRepo.fetchAllPosts();
       emit(PostsLoaded(posts));
     } catch (e) {

@@ -12,6 +12,7 @@ import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart
 import 'package:instagram/features/search/data/firebase_search_repo.dart';
 import 'package:instagram/features/search/presentation/cubit/search_cubit.dart';
 import 'package:instagram/home_navigation.dart';
+import 'package:instagram/responsive/constrained_scaffold.dart';
 import 'package:instagram/theme/theme_cubit.dart';
 
 
@@ -70,7 +71,7 @@ class MyApp extends StatelessWidget {
                 return const MainNavigation();
               }
 
-              return const Scaffold(
+              return const ConstrainedScaffold(
                 body: Center(child: CircularProgressIndicator()),
               );
             },
