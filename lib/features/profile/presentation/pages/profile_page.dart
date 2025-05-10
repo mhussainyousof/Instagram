@@ -182,7 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             color:
                                 user.followers.contains(currentUser!.uid)
                                     ? Colors.black
-                                    : Colors.white,
+                                    : Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

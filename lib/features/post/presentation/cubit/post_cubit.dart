@@ -50,7 +50,9 @@ Future<void> createPost(Post post, {String? imagePath, Uint8List? imageBytes}) a
     await postRepo.createPost(updatedPost);
     
     //! Refresh the post list (this will emit PostsLoaded inside)
-    await fetchAllPosts();
+    // await fetchAllPosts();
+      final posts = await postRepo.fetchAllPosts();
+    emit(PostsLoaded(posts));
 
   } catch (e) {
     emit(PostsError('Failed to create post: $e'));

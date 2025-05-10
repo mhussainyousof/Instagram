@@ -281,7 +281,7 @@ class _PostTileState extends State<PostTile> {
           child: Row(
             children: [
               SizedBox(
-                width: 50,
+                width: 60,
                 child: Row(
                   children: [
                     // like button

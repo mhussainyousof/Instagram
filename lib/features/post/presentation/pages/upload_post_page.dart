@@ -120,10 +120,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
   Widget buildUploadPage(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-    icon: Icon(Icons.arrow_back),
-    onPressed: () => Navigator.pop(context),
-  ),
+        automaticallyImplyLeading: false,
         title: Text(
           "New Post",
           style: TextStyle(fontWeight: FontWeight.bold),
