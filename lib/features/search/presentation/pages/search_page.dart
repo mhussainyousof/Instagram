@@ -59,7 +59,9 @@ class _SearchPageState extends State<SearchPage> {
         itemCount: state.users.length,
         itemBuilder: (context, index) {
           final user = state.users[index];
-          return UserTile(user: user!);
+          return UserTile(
+            showFollowButton: false,
+            user: user!);
         },
       );
     }

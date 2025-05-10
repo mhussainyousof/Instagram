@@ -6,7 +6,7 @@ import 'package:instagram/features/profile/presentation/pages/profile_page.dart'
 class UserTile extends StatelessWidget {
   final ProfileUser user;
 
-  const UserTile({super.key, required this.user});
+  const UserTile({super.key, required this.user, required bool showFollowButton});
 
   @override
   Widget build(BuildContext context) {

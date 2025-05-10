@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
       body: BlocBuilder<PostCubit, PostState>(
         builder: (context, state) {
           //! loading..
-          if (state is PostsLoading && state is PostUploading) {
+          if (state is PostsLoading || state is PostUploading ) {
             return const Center(child: CircularProgressIndicator());
           }
           //! loaded
@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                                               currentProfileUser!.profileImageUrl,
                                           errorWidget:
                                               (context, url, error) =>
-                                                  const Icon(Iconsax.user_minus),
+                                                  const Icon(Iconsax.user_edit, size: 80,),
                                           imageBuilder:
                                               (context, imageProvider) => Container(
                                                 width: 80,
@@ -225,9 +225,10 @@ class _HomePageState extends State<HomePage> {
           //! error
           else if (state is PostsError) {
             return Center(child: Text(state.message));
-          } else {
+          } 
+          
             return const Center(child: Text("Error loading posts"));
-          }
+        
         },
       ),
     );

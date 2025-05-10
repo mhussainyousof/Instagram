@@ -61,12 +61,12 @@ class MyDrawer extends StatelessWidget {
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=> SavedPostsScreen())),
               ),
 
-              //! settings tile
-              MyDrawerTile(
-                title: "S E T T I N G S",
-                icon: Iconsax.setting,
-                onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingsPage())),
-              ),
+              // //! settings tile
+              // MyDrawerTile(
+              //   title: "S E T T I N G S",
+              //   icon: Iconsax.setting,
+              //   onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> SettingsPage())),
+              // ),
               Spacer(),
               //! logout tile
               MyDrawerTile(

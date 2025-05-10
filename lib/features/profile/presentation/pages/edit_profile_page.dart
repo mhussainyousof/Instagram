@@ -23,8 +23,14 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   PlatformFile? imagePickedFile;
   Uint8List? webImage;
-
   final bioTextController = TextEditingController();
+  bool _isUpdating = false;
+
+  @override
+  void initState() {
+    super.initState();
+    bioTextController.text = widget.user.bio;
+  }
 
   Future<void> pickImage() async {
     final result = await FilePicker.platform.pickFiles(
@@ -35,150 +41,196 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (result != null) {
       setState(() {
         imagePickedFile = result.files.first;
-        if (kIsWeb) {
-          webImage =
-              imagePickedFile!.bytes; 
-        }
+        if (kIsWeb) webImage = imagePickedFile!.bytes;
       });
     }
   }
 
-  //! update profile button pressed
   void updateProfile() async {
-    // Get profile cubit
+    if (_isUpdating) return;
+    
+    setState(() => _isUpdating = true);
+    
     final profileCubit = context.read<ProfileCubit>();
-
-    // Prepare images & data
     final String uid = widget.user.uid;
-    final String? newBio =
-        bioTextController.text.isNotEmpty ? bioTextController.text : null;
+    final String? newBio = bioTextController.text.trim().isNotEmpty 
+        ? bioTextController.text.trim() 
+        : null;
+
     final imageMobilePath = kIsWeb ? null : imagePickedFile?.path;
     final imageWebBytes = kIsWeb ? imagePickedFile?.bytes : null;
 
-    // Only update profile if there is something to update
     if (imagePickedFile != null || newBio != null) {
-      profileCubit.updateProfile(
+      await profileCubit.updateProfile(
         uid: uid,
         newBio: newBio,
         imageMobilePath: imageMobilePath,
         imageWebBytes: imageWebBytes,
       );
-    }
-    //! Nothing to update -> go to previous page
-    else {
+    } else {
       Navigator.pop(context);
     }
+    
+    setState(() => _isUpdating = false);
   }
 
-  // BUILD UI
   @override
   Widget build(BuildContext context) {
-    // SCAFFOLD
-    return BlocConsumer<ProfileCubit, ProfileState>(
-      builder: (context, state) {
-        if (state is ProfileLoading) {
-          return Scaffold(
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [CircularProgressIndicator(), Text('Uploading...')],
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Edit Profile',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          TextButton(
+            onPressed: _isUpdating ? null : updateProfile,
+            child: Text(
+              'Done',
+              style: TextStyle(
+                color: _isUpdating ? Colors.grey : Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
               ),
             ),
-          );
-        } else {
-          return buildEditPage();
-        }
-      },
-      listener: (context, state) {
-        if (state is ProfileLoaded) {
-          Navigator.pop(context);
-        }
-      },
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            // Profile Picture Section
+            Column(
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                          width: 1,
+                        ),
+                      ),
+                      child: ClipOval(
+                        child: _buildProfileImage(),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 2,
+                          ),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.camera_alt, size: 20, color: Colors.white),
+                          onPressed: pickImage,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Change Profile Photo',
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 30),
+            
+            // Bio Section
+            TextFormField(
+              controller: bioTextController,
+              maxLines: 3,
+              maxLength: 150,
+              decoration: InputDecoration(
+                labelText: 'Bio',
+                hintText: 'Tell your story...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Theme.of(context).primaryColor,
+                    width: 2,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            
+            const SizedBox(height: 20),
+            
+            // Website Field (Instagram-like)
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: 'Website',
+                hintText: 'Add link',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            
+            if (_isUpdating) ...[
+              const SizedBox(height: 20),
+              const LinearProgressIndicator(),
+              const SizedBox(height: 10),
+              const Text('Updating profile...'),
+            ],
+          ],
+        ),
+      ),
     );
   }
 
-  Widget buildEditPage({double uploadProgress = 0.0}) {
-    return ConstrainedScaffold(
-      appBar: AppBar(
-        title: Text('Edit Profile'),
-        foregroundColor: Theme.of(context).colorScheme.primary,
-        actions: [
-          IconButton(onPressed: updateProfile, icon: Icon(Icons.upload)),
-        ],
-      ),
-
-      body: Column(
-        children: [
-          Center(
-            child: Container(
-              height: 200,
-              width: 200,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-                shape: BoxShape.circle,
-              ),
-              child: ClipOval(
-                child:
-                    (!kIsWeb && imagePickedFile != null)
-                        ? Image.file(
-                          File(imagePickedFile!.path!),
-                          fit: BoxFit.cover,
-                          width: 200,
-                          height: 200,
-                        )
-                        : (kIsWeb && webImage != null)
-                        ? Image.memory(
-                          webImage!,
-                          fit: BoxFit.cover,
-                          width: 200,
-                          height: 200,
-                        )
-                        : CachedNetworkImage(
-                          imageUrl: widget.user.profileImageUrl,
-                          placeholder:
-                              (context, url) =>
-                                  const CircularProgressIndicator(),
-                          errorWidget:
-                              (context, url, error) => Icon(
-                                Icons.person,
-                                size: 72,
-                                color: Theme.of(context).colorScheme.primary,
-                              ),
-                          imageBuilder:
-                              (context, imageProvider) => Image(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                                width: 200,
-                                height: 200,
-                              ),
-                        ),
-              ),
-            ),
+  Widget _buildProfileImage() {
+    if (!kIsWeb && imagePickedFile != null) {
+      return Image.file(
+        File(imagePickedFile!.path!),
+        fit: BoxFit.cover,
+      );
+    } else if (kIsWeb && webImage != null) {
+      return Image.memory(
+        webImage!,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return CachedNetworkImage(
+        imageUrl: widget.user.profileImageUrl,
+        placeholder: (context, url) => Center(
+          child: CircularProgressIndicator(
+            color: Theme.of(context).primaryColor,
           ),
+        ),
+        errorWidget: (context, url, error) => Icon(
+          Icons.person,
+          size: 40,
+          color: Colors.grey.shade400,
+        ),
+        fit: BoxFit.cover,
+      );
+    }
+  }
 
-          const SizedBox(height: 25),
-
-          // Pick image button
-          Center( 
-            child: MaterialButton(
-              onPressed: pickImage,
-              color: Colors.blue,
-              child: const Text("Pick Image"),
-            ), // MaterialButton
-          ), // Center
-
-          Text('Bio'),
-          SizedBox(height: 10),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25.0),
-            child: MyTextField(
-              controller: bioTextController,
-              hintText: widget.user.bio,
-              obscureText: false,
-            ),
-          ),
-        ],
-      ),
-    );
+  @override
+  void dispose() {
+    bioTextController.dispose();
+    super.dispose();
   }
 }
+      

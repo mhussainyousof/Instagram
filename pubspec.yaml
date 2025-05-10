@@ -47,6 +47,7 @@ dependencies:
   iconsax: ^0.0.8
   timeago: ^3.7.0
   google_fonts: ^6.2.1
+  get: ^4.7.2
 
 dev_dependencies:
   flutter_test:

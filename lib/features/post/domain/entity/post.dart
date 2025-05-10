@@ -10,7 +10,7 @@ class Post {
   final DateTime timestamp;
   final List<String> likes;
   final List<Comment> comments;
-  final bool isSaved; // NEW FIELD
+  final bool isSaved; 
 
   Post({
     required this.id,
