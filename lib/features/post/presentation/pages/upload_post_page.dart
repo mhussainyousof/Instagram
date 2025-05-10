@@ -10,7 +10,6 @@ import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
 import 'package:flutter/foundation.dart';
 
-
 class UploadPostPage extends StatefulWidget {
   const UploadPostPage({super.key});
 
@@ -49,7 +48,8 @@ class _UploadPostPageState extends State<UploadPostPage> {
     }
   }
 
-  void uploadPost() {
+  void uploadPost(BuildContext context) async {
+    // Check if required fields are filled (optional, but recommended)
     if (imagePickerFile == null || textController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please add both an image and caption")),
@@ -69,10 +69,28 @@ class _UploadPostPageState extends State<UploadPostPage> {
     );
 
     final postCubit = context.read<PostCubit>();
-    if (kIsWeb) {
-      postCubit.createPost(newPost, imageBytes: imagePickerFile?.bytes);
-    } else {
-      postCubit.createPost(newPost, imagePath: imagePickerFile?.path);
+
+    try {
+      if (kIsWeb) {
+        await postCubit.createPost(newPost, imageBytes: imagePickerFile?.bytes);
+      } else {
+        await postCubit.createPost(newPost, imagePath: imagePickerFile?.path);
+      }
+
+      // Success feedback
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Post uploaded successfully!')));
+
+      // Navigate back if possible
+      if (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      // Error feedback
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to upload post: $e')));
     }
   }
 
@@ -115,13 +133,10 @@ class _UploadPostPageState extends State<UploadPostPage> {
   Widget buildUploadPage(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "New Post",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: Text("New Post", style: TextStyle(fontWeight: FontWeight.bold)),
         actions: [
           TextButton(
-            onPressed: uploadPost,
+            onPressed: () => uploadPost(context),
             child: Text(
               'Share',
               style: TextStyle(
@@ -143,7 +158,8 @@ class _UploadPostPageState extends State<UploadPostPage> {
               height: 300,
               decoration: BoxDecoration(
                 color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12),
+              ),
               child: _buildImagePreview(),
             ),
             SizedBox(height: 20),
@@ -153,14 +169,14 @@ class _UploadPostPageState extends State<UploadPostPage> {
               icon: Icon(Icons.image),
               label: Text(
                 imagePickerFile == null ? 'Select Photo' : 'Change Photo',
-                
               ),
               style: OutlinedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 side: BorderSide(color: Colors.grey),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
-              )),
+                ),
+              ),
               onPressed: pickImage,
             ),
             SizedBox(height: 24),
@@ -198,21 +214,8 @@ class _UploadPostPageState extends State<UploadPostPage> {
 
             // Upload Button
             ElevatedButton(
-              onPressed: uploadPost,
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text(
-                'Upload Post',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
+              onPressed: () => uploadPost(context),
+              child: Text('Upload Post'),
             ),
           ],
         ),

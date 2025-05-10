@@ -45,11 +45,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  void updateProfile() async {
+void updateProfile() async {
     if (_isUpdating) return;
     
     setState(() => _isUpdating = true);
     
+    // Get these values before any async operation
     final profileCubit = context.read<ProfileCubit>();
     final String uid = widget.user.uid;
     final String? newBio = bioTextController.text.trim().isNotEmpty 
@@ -59,20 +60,27 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final imageMobilePath = kIsWeb ? null : imagePickedFile?.path;
     final imageWebBytes = kIsWeb ? imagePickedFile?.bytes : null;
 
-    if (imagePickedFile != null || newBio != null) {
-      await profileCubit.updateProfile(
-        uid: uid,
-        newBio: newBio,
-        imageMobilePath: imageMobilePath,
-        imageWebBytes: imageWebBytes,
-      );
-    } else {
-      Navigator.pop(context);
-    }
-    
-    setState(() => _isUpdating = false);
-  }
+    try {
+      if (imagePickedFile != null || newBio != null) {
+        await profileCubit.updateProfile(
+          uid: uid,
+          newBio: newBio,
+          imageMobilePath: imageMobilePath,
+          imageWebBytes: imageWebBytes,
+        );
+      }
 
+      // Check if widget is still mounted before using context
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    } finally {
+      // Always set state to false when done
+      if (mounted) {
+        setState(() => _isUpdating = false);
+      }
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +136,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           // color: Theme.of(context).primaryColor,
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.grey,
+                            color: Colors.white,
                             width: 2,
                           ),
                         color: Colors.deepPurpleAccent
@@ -136,6 +144,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         child: GestureDetector(
                           onTap: pickImage,
                           child: Icon(
+                            color: Colors.white,
                             size: 15,
                             Iconsax.camera))
                       ),

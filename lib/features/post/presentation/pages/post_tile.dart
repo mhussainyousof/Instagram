@@ -13,6 +13,7 @@ import 'package:instagram/features/post/presentation/cubit/post_state.dart';
 import 'package:instagram/features/profile/domain/entity/profile_user.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:instagram/features/profile/presentation/pages/profile_page.dart';
+import 'package:readmore/readmore.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class PostTile extends StatefulWidget {
@@ -239,25 +240,35 @@ class _PostTileState extends State<PostTile> {
           ),
         ),
         //! Post caption and actions
-        Padding(
-          padding: const EdgeInsets.only(left: 7),
-          child: Text(widget.post.text),
-        ),
-        CachedNetworkImage(
-          imageUrl: widget.post.imageUrl,
+        if (widget.post.text.isNotEmpty)
+    Padding(
+  padding: const EdgeInsets.only(left: 7, bottom: 8),
+  child: ReadMoreText(
+    widget.post.text,
+    trimLines: 3, // number of lines before showing 'Show more'
+    colorClickableText: Colors.blue,
+    trimMode: TrimMode.Line,
+    trimCollapsedText: ' Show more',
+    trimExpandedText: ' Show less',
+  ),
+),
 
-          // height: 430,
-          width: double.infinity,
-          fit: BoxFit.cover,
-          placeholder:
-              (context, url) => Container(height: 430, color: Colors.grey[200]),
-          errorWidget:
-              (context, url, error) => Container(
-                height: 430,
-                color: Colors.grey[200],
-                child: Icon(Iconsax.warning_2, size: 40, color: Colors.red),
-              ),
+    
+    if (widget.post.imageUrl.isNotEmpty)
+      CachedNetworkImage(
+        imageUrl: widget.post.imageUrl,
+        width: double.infinity,
+        fit: BoxFit.cover,
+        placeholder: (context, url) => Container(
+          height: 430,
+          color: Colors.grey[200],
         ),
+        errorWidget: (context, url, error) => Container(
+          height: 430,
+          color: Colors.grey[200],
+          child: Icon(Iconsax.warning_2, size: 40, color: Colors.red),
+        ),
+      ),
 
         //! Buttons -> like, comment, timestamp
         Padding(
