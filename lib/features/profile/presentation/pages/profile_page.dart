@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:instagram/features/auth/domain/entity/app_user.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/post/presentation/pages/post_tile.dart';
@@ -78,7 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
               actions: [
                 if (isOwnProfile)
                   IconButton(
-                    icon: Icon(Icons.edit, size: 24),
+                    icon: Icon(Iconsax.edit, size: 24),
                     onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -200,7 +201,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           width: double.infinity,
                           padding: EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: Colors.grey[100],
+                            
+                            // color: Colors.grey,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(

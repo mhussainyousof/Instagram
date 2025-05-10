@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:instagram/features/profile/domain/entity/profile_user.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
 
@@ -121,18 +122,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       bottom: 0,
                       right: 0,
                       child: Container(
+                        width: 30,
+                        height: 30,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
+                          // color: Theme.of(context).primaryColor,
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.white,
+                            color: Colors.grey,
                             width: 2,
                           ),
+                        color: Colors.deepPurpleAccent
                         ),
-                        child: IconButton(
-                          icon: const Icon(Icons.camera_alt, size: 20, color: Colors.white),
-                          onPressed: pickImage,
-                        ),
+                        child: GestureDetector(
+                          onTap: pickImage,
+                          child: Icon(
+                            size: 15,
+                            Iconsax.camera))
                       ),
                     ),
                   ],
@@ -172,17 +177,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             
             const SizedBox(height: 20),
-            
-            // Website Field (Instagram-like)
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Website',
-                hintText: 'Add link',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
+          
             
             if (_isUpdating) ...[
               const SizedBox(height: 20),
