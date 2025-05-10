@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:instagram/features/auth/home/presentation/pages/home_page.dart';
-import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/post/presentation/pages/upload_post_page.dart';
-import 'package:instagram/features/profile/presentation/pages/profile_page.dart';
 import 'package:instagram/features/search/presentation/pages/search_page.dart';
 import 'package:instagram/setting.dart';
 

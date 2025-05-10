@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/auth/data/firebase_auth_repo.dart';
-import 'package:instagram/features/auth/home/presentation/pages/home_page.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_state.dart';
 import 'package:instagram/features/auth/presentation/pages/auth_page.dart';
@@ -15,8 +14,6 @@ import 'package:instagram/features/search/presentation/cubit/search_cubit.dart';
 import 'package:instagram/home_navigation.dart';
 import 'package:instagram/theme/theme_cubit.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});

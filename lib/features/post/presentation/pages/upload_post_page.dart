@@ -3,14 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:instagram/features/auth/domain/entity/app_user.dart';
-import 'package:instagram/features/auth/presentation/components/stext_field.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:instagram/features/post/domain/entity/post.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
 import 'package:flutter/foundation.dart';
-import 'package:instagram/responsive/constrained_scaffold.dart';  
 
 
 class UploadPostPage extends StatefulWidget {

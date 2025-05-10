@@ -1,20 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:instagram/features/auth/domain/entity/app_user.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/post/presentation/pages/post_tile.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
 import 'package:instagram/features/post/presentation/cubit/post_state.dart';
-import 'package:instagram/features/profile/presentation/components/bio_box.dart';
-import 'package:instagram/features/profile/presentation/components/follow_button.dart';
 import 'package:instagram/features/profile/presentation/components/profile_stats.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_state.dart';
 import 'package:instagram/features/profile/presentation/pages/edit_profile_page.dart';
 import 'package:instagram/features/profile/presentation/pages/follower_page.dart';
-import 'package:instagram/responsive/constrained_scaffold.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({required this.uid, super.key});

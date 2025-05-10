@@ -5,11 +5,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:instagram/features/auth/presentation/components/stext_field.dart';
 import 'package:instagram/features/profile/domain/entity/profile_user.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
-import 'package:instagram/features/profile/presentation/cubit/profile_state.dart';
-import 'package:instagram/responsive/constrained_scaffold.dart';
+
 
 class EditProfilePage extends StatefulWidget {
   final ProfileUser user;
