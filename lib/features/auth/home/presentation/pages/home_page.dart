@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:instagram/features/auth/home/presentation/components/header_text.dart';
-import 'package:instagram/features/auth/home/presentation/components/my_drawer.dart';
 import 'package:instagram/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:instagram/features/post/presentation/pages/post_tile.dart';
 import 'package:instagram/features/post/presentation/cubit/post_cubit.dart';
@@ -56,22 +55,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedScaffold(
-      drawer: MyDrawer(),
-      // appBar: AppBar(
-      //   title: const Text("Home"),
-      //   centerTitle: true,
-      //   foregroundColor: Theme.of(context).colorScheme.primary,
-      //   actions: [
-      //     IconButton(
-      //       onPressed:
-      //           () => Navigator.push(
-      //             context,
-      //             MaterialPageRoute(builder: (context) => UploadPostPage()),
-      //           ),
-      //      icon: Icon(Iconsax.add_square),
-      //     ),
-      //   ],
-      // ),
       body: BlocBuilder<PostCubit, PostState>(
         builder: (context, state) {
           //! loading..

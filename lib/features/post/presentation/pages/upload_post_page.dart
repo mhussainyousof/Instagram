@@ -152,14 +152,14 @@ class _UploadPostPageState extends State<UploadPostPage> {
 
             // Image Selection Button
             OutlinedButton.icon(
-              icon: Icon(Icons.image, color: Theme.of(context).primaryColor),
+              icon: Icon(Icons.image),
               label: Text(
                 imagePickerFile == null ? 'Select Photo' : 'Change Photo',
-                style: TextStyle(color: Theme.of(context).primaryColor),
+                
               ),
               style: OutlinedButton.styleFrom(
                 padding: EdgeInsets.symmetric(vertical: 16),
-                side: BorderSide(color: Theme.of(context).primaryColor),
+                side: BorderSide(color: Colors.grey),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
               )),
@@ -202,7 +202,6 @@ class _UploadPostPageState extends State<UploadPostPage> {
             ElevatedButton(
               onPressed: uploadPost,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).primaryColor,
                 padding: EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
