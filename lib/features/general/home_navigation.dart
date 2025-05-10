@@ -4,7 +4,7 @@ import 'package:instagram/features/auth/home/presentation/pages/home_page.dart';
 import 'package:instagram/features/post/presentation/pages/upload_post_page.dart';
 import 'package:instagram/features/search/presentation/pages/search_page.dart';
 import 'package:instagram/responsive/constrained_scaffold.dart';
-import 'package:instagram/setting.dart';
+import 'package:instagram/features/general/dashboard.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});

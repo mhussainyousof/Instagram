@@ -8,7 +8,7 @@ import 'package:instagram/features/profile/domain/entity/profile_user.dart';
 import 'package:instagram/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:instagram/features/profile/presentation/pages/profile_page.dart';
 import 'package:instagram/responsive/constrained_scaffold.dart';
-import 'package:instagram/theme/theme_cubit.dart';
+import 'package:instagram/colors/theme_cubit.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});

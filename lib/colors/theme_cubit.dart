@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:instagram/theme/dark_mode.dart';
-import 'package:instagram/theme/light_mode.dart';
+import 'package:instagram/colors/dark_mode.dart';
+import 'package:instagram/colors/light_mode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
