@@ -24,7 +24,6 @@ class ProfileStats extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildStatColumn(postCount, 'Posts', ),
           _buildStatColumn(followerCount, 'Followers'),
           _buildStatColumn(followingCount, 'Following'),
         ],

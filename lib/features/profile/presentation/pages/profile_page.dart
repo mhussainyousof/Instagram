@@ -182,7 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             color:
                                 user.followers.contains(currentUser!.uid)
                                     ? Colors.black
-                                    : Colors.black,
+                                    : Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -225,22 +225,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   SizedBox(height: 25),
                   // Posts header
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Posts",
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // list of posts from this user
+                 
+                  
                   BlocBuilder<PostCubit, PostState>(
                     builder: (context, state) {
                       // posts loaded
