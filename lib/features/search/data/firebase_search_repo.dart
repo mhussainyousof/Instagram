@@ -12,7 +12,7 @@ class FirebaseSearchRepo implements SearchRepo {
           
       return result.docs 
           .map((doc) => ProfileUser.fromJson(doc.data()))
-          .where((user) => user.name.toLowerCase().contains(query.toLowerCase()) ?? false)
+          .where((user) => user.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
     } catch (e) {
       throw Exception('Error searching users: $e');
