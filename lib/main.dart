@@ -11,6 +11,6 @@ void main() async{
     GoogleFonts.firaCode(),
   ]);
   runApp(
-     MyApp());
+     MiniInsta());
 }
 

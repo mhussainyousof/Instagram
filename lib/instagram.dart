@@ -16,8 +16,8 @@ import 'package:instagram/features/search/presentation/cubit/search_cubit.dart';
 import 'package:instagram/responsive/constrained_scaffold.dart';
 
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+class MiniInsta extends StatelessWidget {
+  MiniInsta({super.key});
 
   final firebaseAuthRepo = FirebaseAuthRepo();
   final firebaseProfileRepo = FirebaseProfileRepo();
