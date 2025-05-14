@@ -26,7 +26,7 @@ class FirebaseAuthRepo implements AuthRepo {
         name: userDoc['name'],
       );
 
-      // return user
+      //! return user
       return user;
     } catch (e) {
       throw Exception('Login failed: $e');
@@ -44,7 +44,7 @@ class FirebaseAuthRepo implements AuthRepo {
       UserCredential userCredential = await firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
 
-      // create user
+      //! create user
       AppUser user = AppUser(
         uid: userCredential.user!.uid,
         email: email,
@@ -56,7 +56,7 @@ class FirebaseAuthRepo implements AuthRepo {
           .doc(user.uid)
           .set(user.toJson());
 
-      // return user
+      //! return user
       return user;
     } catch (e) {
       throw Exception('Signup failed: $e');

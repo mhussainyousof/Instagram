@@ -7,18 +7,18 @@ class ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 80), // Adjust the padding as needed
+      padding: const EdgeInsets.only(right: 80), 
       child: AnimatedScale(
-        scale: 1.2,  // Scale effect for animation
+        scale: 1.2, 
         duration: Duration(seconds: 1),
         curve: Curves.elasticOut,
         child: Text(
           'Instagram',
           style: GoogleFonts.pacifico(
-            fontSize: 25, // Adjust font size as needed
+            fontSize: 25, 
             fontWeight: FontWeight.bold,
             foreground: Paint()
-              ..shader = LinearGradient( // Instagram-like gradient
+              ..shader = LinearGradient( 
                 colors: [Colors.pink, Colors.purple, Colors.deepPurpleAccent],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomLeft,
