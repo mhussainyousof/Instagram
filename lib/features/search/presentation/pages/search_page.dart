@@ -50,7 +50,7 @@ class _SearchPageState extends State<SearchPage> {
   builder: (context, state) {
     //! Loaded state
     if (state is SearchLoaded) {
-      // No users found
+      //! No users found
       if (state.users.isEmpty) {
         return const Center(child: Text("No users found"));
       }
