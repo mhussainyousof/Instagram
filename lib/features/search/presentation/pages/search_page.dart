@@ -48,7 +48,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
       body: BlocBuilder<SearchCubit, SearchState>(
   builder: (context, state) {
-    // Loaded state
+    //! Loaded state
     if (state is SearchLoaded) {
       // No users found
       if (state.users.isEmpty) {
